@@ -17,10 +17,10 @@ public class StatController {
     private final StatService statService;
 
     @GetMapping("/stats")
-    public List<ViewStats>getStat(@RequestParam @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime start,
-                                  @RequestParam @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime end,
-                                  @RequestParam List<String> uris,
-                                  @RequestParam(required = false, defaultValue = "false") Boolean unique) {
+    public List<ViewStats> getStat(@RequestParam @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime start,
+                                   @RequestParam @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime end,
+                                   @RequestParam List<String> uris,
+                                   @RequestParam(required = false, defaultValue = "false") Boolean unique) {
         log.info("getStat, uris - {}", uris);
         return statService.getStat(start, end, uris, unique);
     }

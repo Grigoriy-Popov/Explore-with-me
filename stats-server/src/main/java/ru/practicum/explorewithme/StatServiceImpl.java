@@ -4,11 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
-import static ru.practicum.explorewithme.Constants.DATE_TIME_PATTERN;
 
 @Service
 @RequiredArgsConstructor
