@@ -1,4 +1,4 @@
-package ru.practicum.explorewithme.participationRequest;
+package ru.practicum.explorewithme.participation_request;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.practicum.explorewithme.event.Event;

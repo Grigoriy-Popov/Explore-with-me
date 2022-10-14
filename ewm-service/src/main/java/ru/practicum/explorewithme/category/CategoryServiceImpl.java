@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.explorewithme.event.EventRepository;
+import ru.practicum.explorewithme.exceptions.AccessDeniedException;
 import ru.practicum.explorewithme.exceptions.NotFoundException;
 
 import java.util.List;
@@ -41,11 +42,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(Long categoryId) {
-        Category category = getCategoryById(categoryId); // check existence of category
+        getCategoryById(categoryId); // check existence of category
         if (eventRepository.existsByCategoryId(categoryId)) {
-            throw new IllegalArgumentException("You can't delete a category while there is at least " +
+            throw new AccessDeniedException("You can't delete a category while there is at least " +
                     "one event in that category");
         }
-        categoryRepository.delete(category);
+        categoryRepository.deleteById(categoryId);
     }
 }

@@ -58,4 +58,14 @@ public class ErrorHandler {
                 .timestamp(LocalDateTime.now())
                 .build();
     }
+
+    @ExceptionHandler(Throwable.class)
+    public ApiError Throwable(Throwable e) {
+        return ApiError.builder()
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .reason("Internal server error.")
+                .message(e.getLocalizedMessage())
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
 }

@@ -17,8 +17,8 @@ import ru.practicum.explorewithme.exceptions.AccessDeniedException;
 import ru.practicum.explorewithme.exceptions.IncorrectDateException;
 import ru.practicum.explorewithme.exceptions.IncorrectStateException;
 import ru.practicum.explorewithme.exceptions.NotFoundException;
-import ru.practicum.explorewithme.participationRequest.ParticipationRequestRepository;
-import ru.practicum.explorewithme.participationRequest.RequestStatus;
+import ru.practicum.explorewithme.participation_request.ParticipationRequestRepository;
+import ru.practicum.explorewithme.participation_request.RequestStatus;
 import ru.practicum.explorewithme.user.User;
 import ru.practicum.explorewithme.user.UserService;
 
@@ -263,8 +263,8 @@ public class EventServiceImpl implements EventService {
                 false);
         Integer views = 0;
         if (!Objects.equals(responseEntity.getBody(), "")) {
-            views = (Integer) ((List<LinkedHashMap>) Objects.requireNonNull(responseEntity.getBody()))
-                    .get(0).get("hits");
+            views = (Integer) (((List<LinkedHashMap>) Objects.requireNonNull(responseEntity.getBody()))
+                    .get(0).get("hits"));
         }
         return views;
     }

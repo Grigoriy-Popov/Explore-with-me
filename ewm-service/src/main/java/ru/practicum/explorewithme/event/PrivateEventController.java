@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.explorewithme.event.dto.*;
-import ru.practicum.explorewithme.participationRequest.ParticipationRequestDto;
-import ru.practicum.explorewithme.participationRequest.ParticipationRequestMapper;
-import ru.practicum.explorewithme.participationRequest.ParticipationRequestService;
+import ru.practicum.explorewithme.participation_request.ParticipationRequestDto;
+import ru.practicum.explorewithme.participation_request.ParticipationRequestMapper;
+import ru.practicum.explorewithme.participation_request.ParticipationRequestService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;

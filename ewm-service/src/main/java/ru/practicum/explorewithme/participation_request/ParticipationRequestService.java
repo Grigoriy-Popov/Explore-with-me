@@ -1,4 +1,4 @@
-package ru.practicum.explorewithme.participationRequest;
+package ru.practicum.explorewithme.participation_request;
 
 import ru.practicum.explorewithme.event.Event;
 
