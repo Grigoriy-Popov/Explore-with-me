@@ -60,7 +60,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(Throwable.class)
-    public ApiError Throwable(Throwable e) {
+    public ApiError throwable(Throwable e) {
         return ApiError.builder()
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .reason("Internal server error.")
