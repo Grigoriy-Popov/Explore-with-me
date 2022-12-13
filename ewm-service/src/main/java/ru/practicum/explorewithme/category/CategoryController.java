@@ -16,7 +16,7 @@ import java.util.List;
 @Slf4j
 public class CategoryController {
     private final CategoryService categoryService;
-
+    
     // PUBLIC
     @GetMapping("categories")
     public List<CategoryDto> getAllCategories(

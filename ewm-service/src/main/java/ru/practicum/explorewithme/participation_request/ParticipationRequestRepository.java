@@ -6,6 +6,7 @@ import ru.practicum.explorewithme.event.Event;
 import java.util.List;
 
 public interface ParticipationRequestRepository extends JpaRepository<ParticipationRequest, Long> {
+
     Boolean existsByRequesterIdAndEventId(Long userId, Long eventId);
 
     Integer countByEventIdAndStatusIs(Long eventId, RequestStatus requestStatus);
@@ -15,4 +16,5 @@ public interface ParticipationRequestRepository extends JpaRepository<Participat
     List<ParticipationRequest> findAllByEventId(Long eventId);
 
     List<ParticipationRequest> findAllByEventAndStatusIs(Event event, RequestStatus status);
+
 }

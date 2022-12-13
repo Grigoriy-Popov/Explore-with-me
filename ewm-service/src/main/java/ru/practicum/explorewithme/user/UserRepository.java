@@ -6,5 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    List<User> findAllByIdIn(List<Long> ids, Pageable page);
+
+    List<User> findAllByIdIn(List<Long> usersIdList, Pageable page);
+
 }

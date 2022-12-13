@@ -10,9 +10,10 @@ public interface UserService {
 
     void checkExistenceById(Long userId);
 
-    List<User> getAllUsers(List<Long> ids, Integer from, Integer size);
+    List<User> getAllUsers(List<Long> usersIdList, Integer from, Integer size);
 
     User editUser(User user, Long userId);
 
     void deleteUser(Long userId);
+
 }

@@ -14,6 +14,7 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 public class CategoryDto {
     private Long id;
+
     @NotBlank
     @NotEmpty
     private String name;

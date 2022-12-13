@@ -1,8 +1,11 @@
 package ru.practicum.explorewithme.category;
 
+import lombok.experimental.UtilityClass;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
+@UtilityClass
 public class CategoryMapper {
     public static Category toCategory(CategoryDto categoryDto) {
         return Category.builder()

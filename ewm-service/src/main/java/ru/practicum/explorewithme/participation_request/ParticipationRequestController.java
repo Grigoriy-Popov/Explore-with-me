@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
@@ -21,7 +23,7 @@ public class ParticipationRequestController {
 
     @PostMapping
     public ParticipationRequestDto createRequest(@PathVariable Long userId,
-                                                 @RequestParam Long eventId) {
+                                                @RequestParam Long eventId) {
         log.info("createRequest, userId - {}, eventId - {}", userId, eventId);
         return ParticipationRequestMapper.toDto(participationRequestService.createRequest(userId, eventId));
     }

@@ -11,30 +11,30 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private final UserRepository repository;
+    private final UserRepository userRepository;
 
     @Override
     public User createUser(User user) {
-        return repository.save(user);
+        return userRepository.save(user);
     }
 
     @Override
     public User getUserById(Long userId) {
-        return repository.findById(userId)
+        return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(String.format("User with id %d not found", userId)));
     }
 
     @Override
     public void checkExistenceById(Long userId) {
-        if (!repository.existsById(userId)) {
+        if (!userRepository.existsById(userId)) {
             throw new NotFoundException(String.format("User with id %d not found", userId));
         }
     }
 
     @Override
-    public List<User> getAllUsers(List<Long> ids, Integer from, Integer size) {
+    public List<User> getAllUsers(List<Long> usersIdList, Integer from, Integer size) {
         Pageable page = PageRequest.of(from / size, size);
-        return repository.findAllByIdIn(ids, page);
+        return userRepository.findAllByIdIn(usersIdList, page);
     }
 
     @Override
@@ -46,11 +46,11 @@ public class UserServiceImpl implements UserService {
         if (updateUser.getEmail() != null) {
             user.setEmail(updateUser.getEmail());
         }
-        return repository.save(user);
+        return userRepository.save(user);
     }
 
     @Override
     public void deleteUser(Long userId) {
-        repository.deleteById(userId);
+        userRepository.deleteById(userId);
     }
 }

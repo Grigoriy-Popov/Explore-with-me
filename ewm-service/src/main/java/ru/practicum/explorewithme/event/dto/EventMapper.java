@@ -1,5 +1,6 @@
 package ru.practicum.explorewithme.event.dto;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.explorewithme.event.Event;
 import ru.practicum.explorewithme.event.State;
 import ru.practicum.explorewithme.category.CategoryMapper;
@@ -8,6 +9,7 @@ import ru.practicum.explorewithme.user.UserMapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@UtilityClass
 public class EventMapper {
     public static Event fromNewEventDto(NewEventDto newEventDto) {
         return Event.builder()
