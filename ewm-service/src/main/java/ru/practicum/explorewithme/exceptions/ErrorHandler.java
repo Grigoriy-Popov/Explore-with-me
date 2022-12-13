@@ -2,6 +2,7 @@ package ru.practicum.explorewithme.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 public class ErrorHandler {
 
     @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiError notFound(NotFoundException e) {
         return ApiError.builder()
                 .status(HttpStatus.NOT_FOUND)
@@ -20,6 +22,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(IncorrectDateException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError incorrectDate(IncorrectDateException e) {
         return ApiError.builder()
                 .status(HttpStatus.BAD_REQUEST)
@@ -30,6 +33,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(IncorrectStateException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError incorrectState(IncorrectStateException e) {
         return ApiError.builder()
                 .status(HttpStatus.BAD_REQUEST)
@@ -40,6 +44,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError incorrectState(AccessDeniedException e) {
         return ApiError.builder()
                 .status(HttpStatus.BAD_REQUEST)
@@ -50,6 +55,7 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(AlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError alreadyExists(AlreadyExistsException e) {
         return ApiError.builder()
                 .status(HttpStatus.BAD_REQUEST)
@@ -59,13 +65,14 @@ public class ErrorHandler {
                 .build();
     }
 
-    @ExceptionHandler(Throwable.class)
-    public ApiError throwable(Throwable e) {
-        return ApiError.builder()
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .reason("Internal server error.")
-                .message(e.getLocalizedMessage())
-                .timestamp(LocalDateTime.now())
-                .build();
-    }
+//    @ExceptionHandler(Throwable.class)
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    public ApiError throwable(Throwable e) {
+//        return ApiError.builder()
+//                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                .reason("Internal server error.")
+//                .message(e.getLocalizedMessage())
+//                .timestamp(LocalDateTime.now())
+//                .build();
+//    }
 }

@@ -1,8 +1,11 @@
 package ru.practicum.explorewithme.participation_request;
 
+import lombok.experimental.UtilityClass;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
+@UtilityClass
 public class ParticipationRequestMapper {
     public static ParticipationRequestDto toDto(ParticipationRequest request) {
         return ParticipationRequestDto.builder()

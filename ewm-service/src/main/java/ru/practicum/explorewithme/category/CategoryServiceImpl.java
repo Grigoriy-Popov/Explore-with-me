@@ -42,11 +42,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(Long categoryId) {
-        getCategoryById(categoryId); // check existence of category
+        Category category = getCategoryById(categoryId); // check existence of category
         if (eventRepository.existsByCategoryId(categoryId)) {
             throw new AccessDeniedException("You can't delete a category while there is at least " +
                     "one event in that category");
         }
-        categoryRepository.deleteById(categoryId);
+        categoryRepository.delete(category);
     }
 }
