@@ -22,16 +22,16 @@ import static ru.practicum.explorewithme.Constants.DATE_TIME_PATTERN;
 @Validated
 @Slf4j
 public class AdminEventController {
-    private final EventService eventService;
+    private final AdminEventService eventService;
 
     @GetMapping
-    public List<FullEventDto> getEventsByAdmin(@RequestParam List<Long> users,
-            @RequestParam List<String> states,
-            @RequestParam List<Long> categories,
+    public List<FullEventDto> getEventsByAdmin(@RequestParam(required = false) List<Long> users,
+            @RequestParam(required = false) List<String> states,
+            @RequestParam(required = false) List<Long> categories,
             @RequestParam(required = false) @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime rangeStart,
             @RequestParam(required = false) @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime rangeEnd,
-            @PositiveOrZero @RequestParam(name = "from", required = false, defaultValue = "0") Integer from,
-            @Positive @RequestParam(name = "size", required = false, defaultValue = "10") Integer size) {
+            @PositiveOrZero @RequestParam(required = false, defaultValue = "0") int from,
+            @Positive @RequestParam(required = false, defaultValue = "10") int size) {
         log.info("getEventsByAdmin, states - {}", states);
         return EventMapper.toFullDtoList(eventService
                 .getEventsByAdmin(users, states, categories, rangeStart, rangeEnd, from, size));

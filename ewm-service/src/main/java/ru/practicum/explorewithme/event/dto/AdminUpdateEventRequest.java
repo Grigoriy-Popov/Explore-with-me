@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.explorewithme.event.location.Location;
 
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 import static ru.practicum.explorewithme.Constants.DATE_TIME_PATTERN;
@@ -20,11 +21,12 @@ import static ru.practicum.explorewithme.Constants.DATE_TIME_PATTERN;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdminUpdateEventRequest {
-
+    @Size(min = 20, max = 2000)
     private String annotation;
 
     private Long category;
 
+    @Size(min = 20, max = 7000)
     private String description;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -40,5 +42,6 @@ public class AdminUpdateEventRequest {
 
     private Boolean requestModeration;
 
+    @Size(min = 3, max = 120)
     private String title;
 }

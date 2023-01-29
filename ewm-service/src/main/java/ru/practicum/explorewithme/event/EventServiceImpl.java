@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class EventServiceImpl implements EventService {
+public class EventServiceImpl implements PrivateEventService, PublicEventService, AdminEventService {
     private final EventRepository eventRepository;
     private final UserService userService;
     private final CategoryService categoryService;
@@ -46,22 +46,22 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<Event> getAllEventsByPublicUser(String text, List<Long> categories, Boolean paid,
                                                 LocalDateTime rangeStart, LocalDateTime rangeEnd, Boolean onlyAvailable,
-                                                String sort, Integer from, Integer size, String ip, String uri) {
+                                                String sort, int from, int size, String ip, String uri) {
         postEndpointHit(uri, ip);
         PageRequest pageRequest = PageRequest.of(from / size, size);
         LocalDateTime start = rangeStart == null ? LocalDateTime.now() : rangeStart;
         LocalDateTime end = rangeEnd == null ? LocalDateTime.MAX : rangeEnd;
         // Список приходит отсортированным по дате, если нужна сортировка по просмотрам, она происходит дальше
         List<Event> events = eventRepository.getAllEventsByPublicUser(text, categories, paid, start, end, pageRequest);
-        events.forEach(this::setConfirmedRequestsAndViews);
         if (onlyAvailable) {
             events = events.stream()
-                    .filter(e -> e.getParticipantLimit() >= e.getConfirmedRequests())
+                    .filter(event -> event.getParticipantLimit() >= event.getConfirmedRequests())
                     .collect(Collectors.toList());
         }
         if (sort.equals("VIEWS")) {
             events.sort(Comparator.comparing(Event::getViews));
         }
+        events.forEach(this::setConfirmedRequestsAndViews);
         return events;
     }
 
@@ -104,7 +104,6 @@ public class EventServiceImpl implements EventService {
     public Event editEventByUser(Long userId, UpdateEventRequest updateEventRequest) {
         userService.checkExistenceById(userId);
         Event event = getEventById(updateEventRequest.getEventId());
-        Category category = categoryService.getCategoryById(updateEventRequest.getCategory());
         if (event.getState() != State.CANCELED && event.getState() != State.PENDING) {
             throw new IncorrectStateException("You can edit only canceled or pending events");
         }
@@ -114,17 +113,19 @@ public class EventServiceImpl implements EventService {
         if (updateEventRequest.getEventDate().isBefore(LocalDateTime.now().plusHours(2))) {
             throw new IncorrectDateException("Event cannot begin earlier than 2 hours later");
         }
-        if (event.getState() == State.CANCELED) {
-            event.setState(State.PENDING);
-        }
-        event.setParticipantLimit(updateEventRequest.getParticipantLimit());
         Integer confirmedRequestsAmount = participationRequestRepository.countByEventIdAndStatusIs(event.getId(),
                 RequestStatus.CONFIRMED);
-        if (event.getParticipantLimit() < confirmedRequestsAmount) {
+        int participantLimit = updateEventRequest.getParticipantLimit();
+        if (participantLimit < confirmedRequestsAmount) {
             throw new AccessDeniedException("New value of participant limit is less then amount of " +
                     "confirmed requests");
         }
+        event.setParticipantLimit(participantLimit);
+        if (event.getState() == State.CANCELED) {
+            event.setState(State.PENDING);
+        }
         event.setAnnotation(updateEventRequest.getAnnotation());
+        Category category = categoryService.getCategoryById(updateEventRequest.getCategory());
         event.setCategory(category);
         event.setDescription(updateEventRequest.getDescription());
         event.setEventDate(updateEventRequest.getEventDate());
@@ -163,15 +164,22 @@ public class EventServiceImpl implements EventService {
     //ADMIN
     @Override
     public List<Event> getEventsByAdmin(List<Long> users, List<String> states, List<Long> categories,
-                                        LocalDateTime rangeStart, LocalDateTime rangeEnd, Integer from, Integer size) {
+                                        LocalDateTime rangeStart, LocalDateTime rangeEnd, int from, int size) {
         List<State> stateList = new ArrayList<>();
-        for (String s : states) {
-            State state = State.valueOf(s);
-            stateList.add(state);
+        if (states != null) {
+            states.forEach(state -> stateList.add(State.valueOf(state)));
         }
+        if (users == null) {
+            users = new ArrayList<>();
+        }
+        if (categories == null) {
+            categories = new ArrayList<>();
+        }
+        LocalDateTime start = rangeStart == null ? LocalDateTime.now() : rangeStart;
+        LocalDateTime end = rangeEnd == null ? LocalDateTime.MAX : rangeEnd;
         Pageable page = PageRequest.of(from / size, size);
         List<Event> events = eventRepository
-                .getEventsByAdmin(users, stateList, categories, rangeStart, rangeEnd, page);
+                .getEventsByAdmin(users, stateList, categories, start, end, page);
         events.forEach(this::setConfirmedRequestsAndViews);
         return events;
     }
@@ -215,7 +223,7 @@ public class EventServiceImpl implements EventService {
         if (event.getState() != State.PENDING) {
             throw new IncorrectStateException("Only pending events can be published");
         }
-        LocalDateTime publishTime = LocalDateTime.now();
+        var publishTime = LocalDateTime.now();
         if (publishTime.isAfter(event.getEventDate().minusHours(1))) {
             throw new IncorrectDateException("The start date of the event must be no earlier than one hour " +
                     "from the date of publication");

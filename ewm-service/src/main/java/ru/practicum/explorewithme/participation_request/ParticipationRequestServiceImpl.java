@@ -3,7 +3,7 @@ package ru.practicum.explorewithme.participation_request;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.explorewithme.event.Event;
-import ru.practicum.explorewithme.event.EventService;
+import ru.practicum.explorewithme.event.PublicEventService;
 import ru.practicum.explorewithme.event.State;
 import ru.practicum.explorewithme.exceptions.*;
 import ru.practicum.explorewithme.user.User;
@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ParticipationRequestServiceImpl implements ParticipationRequestService {
     private final ParticipationRequestRepository participationRequestRepository;
-    private final EventService eventService;
+    private final PublicEventService eventService;
     private final UserService userService;
 
     public ParticipationRequest getRequestById(Long requestId) {

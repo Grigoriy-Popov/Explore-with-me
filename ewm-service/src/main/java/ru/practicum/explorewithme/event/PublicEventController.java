@@ -21,18 +21,18 @@ import static ru.practicum.explorewithme.Constants.DATE_TIME_PATTERN;
 @RequiredArgsConstructor
 @Slf4j
 public class PublicEventController {
-    private final EventService eventService;
+    private final PublicEventService eventService;
 
     @GetMapping
-    public List<ShortEventDto> getAllEventsByPublicUser(@RequestParam String text,
-            @RequestParam List<Long> categories,
-            @RequestParam Boolean paid,
+    public List<ShortEventDto> getAllEventsByPublicUser(@RequestParam(required = false, defaultValue = "") String text,
+            @RequestParam(required = false) List<Long> categories,
+            @RequestParam(required = false) Boolean paid,
             @RequestParam(required = false) @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime rangeStart,
             @RequestParam(required = false) @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime rangeEnd,
-            @RequestParam Boolean onlyAvailable,
-            @RequestParam String sort,
-            @PositiveOrZero @RequestParam(name = "from", required = false, defaultValue = "0") Integer from,
-            @Positive @RequestParam(name = "size", required = false, defaultValue = "10") Integer size,
+            @RequestParam(required = false, defaultValue = "false") Boolean onlyAvailable,
+            @RequestParam(required = false) String sort,
+            @PositiveOrZero @RequestParam(required = false, defaultValue = "0") int from,
+            @Positive @RequestParam(required = false, defaultValue = "10") int size,
             HttpServletRequest request) {
         log.info("getAllEventsByPublicUser");
         return EventMapper.toShortDtoList(eventService.getAllEventsByPublicUser(text, categories, paid, rangeStart,

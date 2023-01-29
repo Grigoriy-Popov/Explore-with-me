@@ -65,6 +65,17 @@ public class ErrorHandler {
                 .build();
     }
 
+    @ExceptionHandler(ConflictException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ApiError conflict(ConflictException e) {
+        return ApiError.builder()
+                .status(HttpStatus.CONFLICT)
+                .reason("Conflict")
+                .message(e.getLocalizedMessage())
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
 //    @ExceptionHandler(Throwable.class)
 //    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 //    public ApiError throwable(Throwable e) {

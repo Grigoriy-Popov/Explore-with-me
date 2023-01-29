@@ -1,9 +1,11 @@
 package ru.practicum.explorewithme.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.practicum.explorewithme.exceptions.ConflictException;
 import ru.practicum.explorewithme.exceptions.NotFoundException;
 
 import java.util.List;
@@ -15,7 +17,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
-        return userRepository.save(user);
+        try {
+            return userRepository.save(user);
+        } catch (DataIntegrityViolationException e) {
+            throw new ConflictException("User with this name or email is already exists");
+        }
     }
 
     @Override

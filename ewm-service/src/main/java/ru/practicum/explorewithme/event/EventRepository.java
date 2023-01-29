@@ -14,21 +14,23 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     List<Event> findAllByInitiator(User user, Pageable page);
 
-    @Query("SELECT MIN(e.createdOn) FROM Event AS e")
+    @Query("SELECT MIN(e.createdOn) FROM Event e")
     LocalDateTime getMinCreationDate();
 
-    @Query("SELECT e FROM Event AS e WHERE e.initiator.id IN ?1 " +
-            "AND e.state IN ?2 AND e.category.id IN ?3 " +
-            "AND e.eventDate BETWEEN ?4 AND ?5")
+    @Query("SELECT e FROM Event e WHERE " +
+            "e.initiator.id IN :users " +
+            "AND e.state IN :states " +
+            "AND e.category.id IN :categories " +
+            "AND e.eventDate BETWEEN :rangeStart AND :rangeEnd")
     List<Event> getEventsByAdmin(List<Long> users, List<State> states, List<Long> categories,
                                  LocalDateTime rangeStart, LocalDateTime rangeEnd, Pageable page);
 
-    @Query("SELECT e FROM Event AS e " +
-            "WHERE ((UPPER(e.annotation) LIKE UPPER(CONCAT('%', ?1, '%')) " +
-            "OR UPPER(e.description) LIKE UPPER(CONCAT('%', ?1, '%'))) " +
-            "AND e.category.id IN ?2 " +
-            "AND e.paid = ?3 " +
-            "AND e.eventDate BETWEEN ?4 AND ?5) " +
+    @Query("SELECT e FROM Event e " +
+            "WHERE ((UPPER(e.annotation) LIKE UPPER(CONCAT('%', :text, '%')) " +
+            "OR UPPER(e.description) LIKE UPPER(CONCAT('%', :text, '%'))) " +
+            "AND e.category.id IN :categories " +
+            "AND e.paid = :paid " +
+            "AND e.eventDate BETWEEN :start AND :end) " +
             "ORDER BY e.eventDate DESC")
     List<Event> getAllEventsByPublicUser(String text, List<Long> categories, Boolean paid, LocalDateTime start,
                              LocalDateTime end,  Pageable pageable);

@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class PrivateEventController {
-    private final EventService eventService;
+    private final PrivateEventService eventService;
     private final ParticipationRequestService participationRequestService;
 
     @GetMapping

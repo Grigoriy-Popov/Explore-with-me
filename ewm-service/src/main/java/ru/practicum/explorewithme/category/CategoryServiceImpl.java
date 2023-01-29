@@ -1,11 +1,13 @@
 package ru.practicum.explorewithme.category;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.explorewithme.event.EventRepository;
 import ru.practicum.explorewithme.exceptions.AccessDeniedException;
+import ru.practicum.explorewithme.exceptions.ConflictException;
 import ru.practicum.explorewithme.exceptions.NotFoundException;
 
 import java.util.List;
@@ -18,7 +20,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category createCategory(Category category) {
-        return categoryRepository.save(category);
+        try {
+            return categoryRepository.save(category);
+        } catch (DataIntegrityViolationException e) {
+            throw new ConflictException("This category is already exists");
+        }
     }
 
     @Override
@@ -37,7 +43,11 @@ public class CategoryServiceImpl implements CategoryService {
     public Category editCategory(Category category) {
         Category categoryToUpdate = getCategoryById(category.getId());
         categoryToUpdate.setName(category.getName());
-        return categoryRepository.save(categoryToUpdate);
+        try {
+            return categoryRepository.save(categoryToUpdate);
+        } catch (DataIntegrityViolationException e) {
+            throw new ConflictException("This category is already exists");
+        }
     }
 
     @Override
