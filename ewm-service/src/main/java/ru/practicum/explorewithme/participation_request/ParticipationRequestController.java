@@ -17,21 +17,21 @@ public class ParticipationRequestController {
 
     @GetMapping
     public List<ParticipationRequestDto> getUserRequestsByRequester(@PathVariable Long userId) {
-        log.info("getUserRequestsByRequester, userId - {}", userId);
+        log.info("hit endpoint - getUserRequestsByRequester, userId - {}", userId);
         return ParticipationRequestMapper.toDtoList(participationRequestService.getUserRequestsByRequester(userId));
     }
 
     @PostMapping
     public ParticipationRequestDto createRequest(@PathVariable Long userId,
                                                 @RequestParam Long eventId) {
-        log.info("createRequest, userId - {}, eventId - {}", userId, eventId);
+        log.info("hit endpoint - createRequest, userId - {}, eventId - {}", userId, eventId);
         return ParticipationRequestMapper.toDto(participationRequestService.createRequest(userId, eventId));
     }
 
     @PatchMapping("/{requestId}/cancel")
     public ParticipationRequestDto cancelRequestByRequester(@PathVariable Long userId,
                                                             @PathVariable Long requestId) {
-        log.info("cancelRequestByRequester, userId - {}, requestId - {}", userId, requestId);
+        log.info("hit endpoint - cancelRequestByRequester, userId - {}, requestId - {}", userId, requestId);
         return ParticipationRequestMapper.toDto(participationRequestService.cancelRequestByRequester(userId, requestId));
     }
 }

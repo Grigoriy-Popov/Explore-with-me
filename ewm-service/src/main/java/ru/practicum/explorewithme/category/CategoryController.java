@@ -22,34 +22,34 @@ public class CategoryController {
     public List<CategoryDto> getAllCategories(
             @PositiveOrZero @RequestParam(name = "from", required = false, defaultValue = "0") Integer from,
             @Positive @RequestParam(name = "size", required = false, defaultValue = "10") Integer size) {
-        log.info("getAllCategoriesPublic");
+        log.info("hit endpoint - getAllCategoriesPublic");
         return CategoryMapper.toDtoList(categoryService.getAllCategories(from, size));
     }
 
     @GetMapping(path = "categories/{catId}")
     public CategoryDto getCategoryById(@PathVariable Long catId) {
-        log.info("getCategoryByIdPublic - {}", catId);
+        log.info("hit endpoint - getCategoryByIdPublic - {}", catId);
         return CategoryMapper.toDto(categoryService.getCategoryById(catId));
     }
 
     // ADMIN
     @PostMapping("admin/categories")
     public CategoryDto createCategory(@Valid @RequestBody CategoryDto categoryDto) {
-        log.info("createCategory - {}", categoryDto.getName());
+        log.info("hit endpoint - createCategory - {}", categoryDto.getName());
         Category category = CategoryMapper.toCategory(categoryDto);
         return CategoryMapper.toDto(categoryService.createCategory(category));
     }
 
     @PatchMapping("admin/categories")
     public CategoryDto editCategory(@Valid @RequestBody CategoryDto categoryDto) {
-        log.info("editCategory, name - {}", categoryDto.getName());
+        log.info("hit endpoint - editCategory, name - {}", categoryDto.getName());
         Category category = CategoryMapper.toCategory(categoryDto);
         return CategoryMapper.toDto(categoryService.editCategory(category));
     }
 
     @DeleteMapping("admin/categories/{catId}")
     public void deleteCategoryById(@PathVariable Long catId) {
-        log.info("deleteCategoryById, id - {}", catId);
+        log.info("hit endpoint - deleteCategoryById, id - {}", catId);
         categoryService.deleteCategory(catId);
     }
 }

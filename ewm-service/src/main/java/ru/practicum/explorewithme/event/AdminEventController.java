@@ -32,7 +32,7 @@ public class AdminEventController {
             @RequestParam(required = false) @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime rangeEnd,
             @PositiveOrZero @RequestParam(required = false, defaultValue = "0") int from,
             @Positive @RequestParam(required = false, defaultValue = "10") int size) {
-        log.info("getEventsByAdmin, states - {}", states);
+        log.info("hit endpoint - getEventsByAdmin, states - {}", states);
         return EventMapper.toFullDtoList(eventService
                 .getEventsByAdmin(users, states, categories, rangeStart, rangeEnd, from, size));
     }
@@ -40,19 +40,19 @@ public class AdminEventController {
     @PutMapping("/{eventId}")
     public FullEventDto editEventByAdmin(@PathVariable Long eventId,
                                          @RequestBody AdminUpdateEventRequest adminUpdateEventRequest) {
-        log.info("editEventByAdmin");
+        log.info("hit endpoint - editEventByAdmin");
         return EventMapper.toFullDto(eventService.editEventByAdmin(eventId, adminUpdateEventRequest));
     }
 
     @PatchMapping("/{eventId}/publish")
     public FullEventDto publishEventByAdmin(@PathVariable Long eventId) {
-        log.info("publishEventByAdmin");
+        log.info("hit endpoint - publishEventByAdmin");
         return EventMapper.toFullDto(eventService.publishEventByAdmin(eventId));
     }
 
     @PatchMapping("/{eventId}/reject")
     public FullEventDto rejectEventByAdmin(@PathVariable Long eventId) {
-        log.info("rejectEventByAdmin");
+        log.info("hit endpoint - rejectEventByAdmin");
         return EventMapper.toFullDto(eventService.rejectEventByAdmin(eventId));
     }
 }

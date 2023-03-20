@@ -2,6 +2,7 @@ package ru.practicum.explorewithme.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -15,39 +16,45 @@ import java.util.List;
 @Slf4j
 public class UserController {
     private final UserService userService;
+    private final UserMapperMapStruct mapper;
 
     @PostMapping
     public UserDto createUser(@Valid @RequestBody UserDto userDto) {
-        log.info("createUser, name - {}, email - {}", userDto.getName(), userDto.getEmail());
+        log.info("hit endpoint - createUser, name - {}, email - {}", userDto.getName(), userDto.getEmail());
         User user = UserMapper.fromDto(userDto);
-        return UserMapper.toDto(userService.createUser(user));
+//        return UserMapper.toDto(userService.createUser(user)); второй вариант маппинга - вручную
+        return mapper.toUserDto(userService.createUser(user));
     }
 
     @GetMapping("/{userId}")
     public UserDto getUserById(@PathVariable Long userId) {
-        log.info("getUserById, id - {}", userId);
-        return UserMapper.toDto(userService.getUserById(userId));
+        log.info("hit endpoint - getUserById, id - {}", userId);
+//        return UserMapper.toDto(userService.getUserById(userId));
+        return mapper.toUserDto(userService.getUserById(userId));
     }
 
     @GetMapping
     public List<UserDto> getAllUsers(@RequestParam(required = false) List<Long> ids,
             @PositiveOrZero @RequestParam(name = "from", required = false, defaultValue = "0") Integer from,
             @Positive @RequestParam(name = "size", required = false, defaultValue = "10") Integer size) {
-        log.info("getAllUsers");
-        return UserMapper.toDtoList(userService.getAllUsers(ids, from, size));
+        log.info("hit endpoint - getAllUsers");
+//        return UserMapper.toDtoList(userService.getAllUsers(ids, from, size));
+        return mapper.toDtoList(userService.getAllUsers(ids, from, size));
     }
 
     @PatchMapping("/{userId}")
     public UserDto editUser(@RequestBody UserDto userDto,
                          @PathVariable Long userId) {
-        log.info("editUser, name - {}, email - {}", userDto.getName(), userDto.getEmail());
-        User updateUser = UserMapper.fromDto(userDto);
-        return UserMapper.toDto(userService.editUser(updateUser, userId));
+        log.info("hit endpoint - editUser, name - {}, email - {}", userDto.getName(), userDto.getEmail());
+//        User updateUser = UserMapper.fromDto(userDto);
+        User updateUser = mapper.toUser(userDto);
+//        return UserMapper.toDto(userService.editUser(updateUser, userId));
+        return mapper.toUserDto(userService.editUser(updateUser, userId));
     }
 
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable Long userId) {
-        log.info("deleteUser, id - {}", userId);
+        log.info("hit endpoint - deleteUser, id - {}", userId);
         userService.deleteUser(userId);
     }
 }

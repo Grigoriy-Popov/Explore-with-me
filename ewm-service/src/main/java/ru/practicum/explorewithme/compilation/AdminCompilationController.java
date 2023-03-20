@@ -17,37 +17,37 @@ public class AdminCompilationController {
 
     @PostMapping
     public CompilationDto createCompilation(@RequestBody @Validated NewCompilationDto newCompilationDto) {
-        log.info("createCompilation");
+        log.info("hit endpoint - createCompilation");
         return CompilationMapper.toDto(compilationService.createCompilation(newCompilationDto));
     }
 
     @DeleteMapping("/{compId}")
     public void deleteCompilationById(@PathVariable Long compId) {
-        log.info("deleteCompilationById - {}", compId);
+        log.info("hit endpoint - deleteCompilationById - {}", compId);
         compilationService.deleteCompilationById(compId);
     }
 
     @DeleteMapping("/{compId}/events/{eventId}")
     public void deleteEventFromCompilation(@PathVariable Long compId, @PathVariable Long eventId) {
-        log.info("deleteEventFromCompilation: compId - {}, eventId - {}", compId, eventId);
+        log.info("hit endpoint - deleteEventFromCompilation: compilation id - {}, event id - {}", compId, eventId);
         compilationService.deleteEventFromCompilation(compId, eventId);
     }
 
     @PatchMapping("/{compId}/events/{eventId}")
     public void addEventToCompilation(@PathVariable Long compId, @PathVariable Long eventId) {
-        log.info("addEventToCompilation: compId - {}, eventId - {}", compId, eventId);
+        log.info("hit endpoint - addEventToCompilation: compilation id - {}, event id - {}", compId, eventId);
         compilationService.addEventToCompilation(compId, eventId);
     }
 
     @PatchMapping("/{compId}/pin")
     public void pinCompilation(@PathVariable Long compId) {
-        log.info("pinCompilation: compId - {}", compId);
+        log.info("hit endpoint - pinCompilation: compilation id - {}", compId);
         compilationService.pinCompilation(compId);
     }
 
     @DeleteMapping("/{compId}/pin")
     public void unpinCompilation(@PathVariable Long compId) {
-        log.info("unpinCompilation: compId - {}", compId);
+        log.info("hit endpoint - unpinCompilation: compilation id - {}", compId);
         compilationService.unpinCompilation(compId);
     }
 }
