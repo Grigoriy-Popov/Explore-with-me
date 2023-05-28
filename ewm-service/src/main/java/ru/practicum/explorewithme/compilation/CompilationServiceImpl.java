@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.explorewithme.compilation.dto.NewCompilationDto;
 import ru.practicum.explorewithme.event.Event;
-import ru.practicum.explorewithme.event.PublicEventService;
+import ru.practicum.explorewithme.event.service.PublicEventService;
 import ru.practicum.explorewithme.exceptions.NotFoundException;
 
 import java.util.List;

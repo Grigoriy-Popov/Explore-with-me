@@ -1,4 +1,6 @@
-package ru.practicum.explorewithme.event;
+package ru.practicum.explorewithme.event.service;
+
+import ru.practicum.explorewithme.event.Event;
 
 import java.time.LocalDateTime;
 import java.util.List;

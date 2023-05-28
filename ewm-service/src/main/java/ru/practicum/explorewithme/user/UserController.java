@@ -2,8 +2,10 @@ package ru.practicum.explorewithme.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.explorewithme.user.dto.UserDto;
+import ru.practicum.explorewithme.user.dto.UserMapper;
+import ru.practicum.explorewithme.user.dto.UserMapperMapStruct;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -21,16 +23,16 @@ public class UserController {
     @PostMapping
     public UserDto createUser(@Valid @RequestBody UserDto userDto) {
         log.info("hit endpoint - createUser, name - {}, email - {}", userDto.getName(), userDto.getEmail());
-        User user = UserMapper.fromDto(userDto);
+        User user = UserMapper.toEntity(userDto);
 //        return UserMapper.toDto(userService.createUser(user)); второй вариант маппинга - вручную
-        return mapper.toUserDto(userService.createUser(user));
+        return mapper.toDto(userService.createUser(user));
     }
 
     @GetMapping("/{userId}")
     public UserDto getUserById(@PathVariable Long userId) {
         log.info("hit endpoint - getUserById, id - {}", userId);
 //        return UserMapper.toDto(userService.getUserById(userId));
-        return mapper.toUserDto(userService.getUserById(userId));
+        return mapper.toDto(userService.getUserById(userId));
     }
 
     @GetMapping
@@ -38,8 +40,8 @@ public class UserController {
             @PositiveOrZero @RequestParam(name = "from", required = false, defaultValue = "0") Integer from,
             @Positive @RequestParam(name = "size", required = false, defaultValue = "10") Integer size) {
         log.info("hit endpoint - getAllUsers");
-//        return UserMapper.toDtoList(userService.getAllUsers(ids, from, size));
-        return mapper.toDtoList(userService.getAllUsers(ids, from, size));
+//        return UserMapper.toDto(userService.getAllUsers(ids, from, size));
+        return mapper.toDto(userService.getAllUsers(ids, from, size));
     }
 
     @PatchMapping("/{userId}")
@@ -47,9 +49,9 @@ public class UserController {
                          @PathVariable Long userId) {
         log.info("hit endpoint - editUser, name - {}, email - {}", userDto.getName(), userDto.getEmail());
 //        User updateUser = UserMapper.fromDto(userDto);
-        User updateUser = mapper.toUser(userDto);
+        User updateUser = mapper.toEntity(userDto);
 //        return UserMapper.toDto(userService.editUser(updateUser, userId));
-        return mapper.toUserDto(userService.editUser(updateUser, userId));
+        return mapper.toDto(userService.editUser(updateUser, userId));
     }
 
     @DeleteMapping("/{userId}")

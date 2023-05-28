@@ -25,7 +25,7 @@ public class PublicCompilationController {
             @PositiveOrZero @RequestParam(name = "from", required = false, defaultValue = "0") Integer from,
             @Positive @RequestParam(name = "size", required = false, defaultValue = "10") Integer size) {
         log.info("hit endpoint - getAllCompilations: pinned - {}", pinned);
-        return CompilationMapper.toDtoList(compilationService.getAllCompilations(pinned, from, size));
+        return CompilationMapper.toDto(compilationService.getAllCompilations(pinned, from, size));
     }
 
     @GetMapping("/{compId}")

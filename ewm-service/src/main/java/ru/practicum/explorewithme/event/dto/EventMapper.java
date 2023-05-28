@@ -3,15 +3,16 @@ package ru.practicum.explorewithme.event.dto;
 import lombok.experimental.UtilityClass;
 import ru.practicum.explorewithme.event.Event;
 import ru.practicum.explorewithme.event.State;
-import ru.practicum.explorewithme.category.CategoryMapper;
-import ru.practicum.explorewithme.user.UserMapper;
+import ru.practicum.explorewithme.category.dto.CategoryMapper;
+import ru.practicum.explorewithme.user.dto.UserMapper;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @UtilityClass
 public class EventMapper {
-    public static Event fromNewEventDto(NewEventDto newEventDto) {
+    public static Event toEntityFromNewEventDto(NewEventDto newEventDto) {
         return Event.builder()
                 .annotation(newEventDto.getAnnotation())
                 .description(newEventDto.getDescription())
@@ -20,7 +21,6 @@ public class EventMapper {
                 .paid(newEventDto.getPaid())
                 .participantLimit(newEventDto.getParticipantLimit())
                 .requestModeration(newEventDto.getRequestModeration())
-                .state(State.PENDING)
                 .title(newEventDto.getTitle())
                 .build();
     }
@@ -60,13 +60,13 @@ public class EventMapper {
                 .build();
     }
 
-    public static List<ShortEventDto> toShortDtoList(List<Event> events) {
+    public static List<ShortEventDto> toShortDto(Collection<Event> events) {
         return events.stream()
                 .map(EventMapper::toShortDto)
                 .collect(Collectors.toList());
     }
 
-    public static List<FullEventDto> toFullDtoList(List<Event> events) {
+    public static List<FullEventDto> toFullDto(Collection<Event> events) {
         return events.stream()
                 .map(EventMapper::toFullDto)
                 .collect(Collectors.toList());

@@ -1,7 +1,9 @@
-package ru.practicum.explorewithme.category;
+package ru.practicum.explorewithme.category.dto;
 
 import lombok.experimental.UtilityClass;
+import ru.practicum.explorewithme.category.Category;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +23,7 @@ public class CategoryMapper {
                 .build();
     }
 
-    public static List<CategoryDto> toDtoList(List<Category> categories) {
+    public static List<CategoryDto> toDto(Collection<Category> categories) {
         return categories.stream()
                 .map(CategoryMapper::toDto)
                 .collect(Collectors.toList());

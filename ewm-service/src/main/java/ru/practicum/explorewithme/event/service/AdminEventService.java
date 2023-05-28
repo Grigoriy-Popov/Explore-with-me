@@ -1,5 +1,6 @@
-package ru.practicum.explorewithme.event;
+package ru.practicum.explorewithme.event.service;
 
+import ru.practicum.explorewithme.event.Event;
 import ru.practicum.explorewithme.event.dto.AdminUpdateEventRequest;
 
 import java.time.LocalDateTime;

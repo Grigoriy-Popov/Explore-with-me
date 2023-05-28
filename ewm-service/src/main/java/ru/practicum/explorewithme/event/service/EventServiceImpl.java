@@ -1,4 +1,4 @@
-package ru.practicum.explorewithme.event;
+package ru.practicum.explorewithme.event.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -9,6 +9,9 @@ import ru.practicum.explorewithme.category.Category;
 import ru.practicum.explorewithme.category.CategoryService;
 import ru.practicum.explorewithme.client.EndpointHit;
 import ru.practicum.explorewithme.client.StatClient;
+import ru.practicum.explorewithme.event.Event;
+import ru.practicum.explorewithme.event.EventRepository;
+import ru.practicum.explorewithme.event.State;
 import ru.practicum.explorewithme.event.dto.AdminUpdateEventRequest;
 import ru.practicum.explorewithme.event.dto.UpdateEventRequest;
 import ru.practicum.explorewithme.event.location.Location;
@@ -85,9 +88,10 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
         User initiator = userService.getUserById(userId);
         Category category = categoryService.getCategoryById(categoryId);
         Location location = locationRepository.save(event.getLocation());
-        event.setLocation(location);
-        event.setCategory(category);
         event.setInitiator(initiator);
+        event.setCategory(category);
+        event.setLocation(location);
+        event.setState(State.PENDING);
         return eventRepository.save(event);
     }
 
