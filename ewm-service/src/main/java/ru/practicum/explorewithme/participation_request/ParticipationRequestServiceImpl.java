@@ -47,7 +47,6 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
                 .event(event)
                 .requester(user)
                 .status(event.isRequestModeration() ? RequestStatus.PENDING : RequestStatus.CONFIRMED)
-                .status(RequestStatus.PENDING)
                 .build();
         return participationRequestRepository.save(request);
     }
