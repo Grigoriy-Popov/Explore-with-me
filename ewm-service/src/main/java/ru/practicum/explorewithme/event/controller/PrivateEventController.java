@@ -2,13 +2,24 @@ package ru.practicum.explorewithme.event.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.explorewithme.event.Event;
-import ru.practicum.explorewithme.event.dto.*;
+import ru.practicum.explorewithme.event.dto.EventMapper;
+import ru.practicum.explorewithme.event.dto.EventMapperMapStruct;
+import ru.practicum.explorewithme.event.dto.FullEventDto;
+import ru.practicum.explorewithme.event.dto.NewEventDto;
+import ru.practicum.explorewithme.event.dto.ShortEventDto;
+import ru.practicum.explorewithme.event.dto.UpdateEventRequest;
 import ru.practicum.explorewithme.event.service.PrivateEventService;
-import ru.practicum.explorewithme.participation_request.dto.ParticipationRequestDto;
-import ru.practicum.explorewithme.participation_request.dto.ParticipationRequestMapper;
 import ru.practicum.explorewithme.participation_request.ParticipationRequestService;
+import ru.practicum.explorewithme.participation_request.dto.ParticipationRequestDto;
 import ru.practicum.explorewithme.participation_request.dto.ParticipationRequestMapperMapStruct;
 
 import javax.validation.Valid;
@@ -28,8 +39,8 @@ public class PrivateEventController {
 
     @GetMapping
     public List<ShortEventDto> getAllInitiatorEvents(@PathVariable Long userId,
-            @PositiveOrZero @RequestParam(name = "from", required = false, defaultValue = "0") Integer from,
-            @Positive @RequestParam(name = "size", required = false, defaultValue = "10") Integer size) {
+                                                     @PositiveOrZero @RequestParam(name = "from", required = false, defaultValue = "0") Integer from,
+                                                     @Positive @RequestParam(name = "size", required = false, defaultValue = "10") Integer size) {
         log.info("hit endpoint - getAllInitiatorEvents by user with id - {}", userId);
 //        return EventMapper.toShortDto(eventService.getAllInitiatorEvents(userId, from, size));
         return eventMapper.toShortDto(eventService.getAllInitiatorEvents(userId, from, size));
@@ -85,7 +96,7 @@ public class PrivateEventController {
 
     @PatchMapping("/{eventId}/requests/{reqId}/reject")
     public ParticipationRequestDto rejectRequestByInitiator(@PathVariable Long userId, @PathVariable Long eventId,
-                                                             @PathVariable Long reqId) {
+                                                            @PathVariable Long reqId) {
         log.info("hit endpoint - rejectRequestByInitiator");
 //        return ParticipationRequestMapper.toDto(participationRequestService.rejectRequestByInitiator(userId, eventId, reqId));
         return requestMapper.toDto(participationRequestService.rejectRequestByInitiator(userId, eventId, reqId));

@@ -1,9 +1,8 @@
 package ru.practicum.explorewithme.event.dto;
 
 import lombok.experimental.UtilityClass;
-import ru.practicum.explorewithme.event.Event;
-import ru.practicum.explorewithme.event.State;
 import ru.practicum.explorewithme.category.dto.CategoryMapper;
+import ru.practicum.explorewithme.event.Event;
 import ru.practicum.explorewithme.user.dto.UserMapper;
 
 import java.util.Collection;

@@ -3,8 +3,11 @@ package ru.practicum.explorewithme.event.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.*;
-import ru.practicum.explorewithme.event.dto.EventMapper;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.explorewithme.event.dto.EventMapperMapStruct;
 import ru.practicum.explorewithme.event.dto.FullEventDto;
 import ru.practicum.explorewithme.event.dto.ShortEventDto;
@@ -35,8 +38,7 @@ public class PublicEventController {
             @RequestParam(required = false, defaultValue = "false") Boolean onlyAvailable,
             @RequestParam(required = false, defaultValue = "EVENT_DATE") String sort,
             @PositiveOrZero @RequestParam(required = false, defaultValue = "0") int from,
-            @Positive @RequestParam(required = false, defaultValue = "10") int size,
-            HttpServletRequest request) {
+            @Positive @RequestParam(required = false, defaultValue = "10") int size, HttpServletRequest request) {
         log.info("hit endpoint - getAllEventsByPublicUser");
 //        return EventMapper.toShortDto(eventService.getAllEventsByPublicUser(text, categories, paid, rangeStart,
 //                rangeEnd, onlyAvailable, sort, from, size, request.getRemoteAddr(), request.getRequestURI()));

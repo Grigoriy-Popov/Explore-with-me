@@ -3,9 +3,12 @@ package ru.practicum.explorewithme.participation_request;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.explorewithme.event.Event;
-import ru.practicum.explorewithme.event.service.PublicEventService;
 import ru.practicum.explorewithme.event.State;
-import ru.practicum.explorewithme.exceptions.*;
+import ru.practicum.explorewithme.event.service.PublicEventService;
+import ru.practicum.explorewithme.exceptions.AccessDeniedException;
+import ru.practicum.explorewithme.exceptions.AlreadyExistsException;
+import ru.practicum.explorewithme.exceptions.IncorrectStateException;
+import ru.practicum.explorewithme.exceptions.NotFoundException;
 import ru.practicum.explorewithme.user.User;
 import ru.practicum.explorewithme.user.UserService;
 
