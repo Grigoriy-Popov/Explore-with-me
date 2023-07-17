@@ -16,9 +16,9 @@ import java.util.List;
 public class NewCompilationDto {
     private List<Long> events;
 
-    @NotNull
+    @NotNull(message = "Compilation should be pinned or unpinned")
     private boolean pinned;
 
-    @NotBlank
+    @NotBlank(message = "Title can not be empty")
     private String title;
 }

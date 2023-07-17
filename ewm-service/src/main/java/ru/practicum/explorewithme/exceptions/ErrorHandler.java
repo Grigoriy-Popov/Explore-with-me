@@ -1,11 +1,19 @@
 package ru.practicum.explorewithme.exceptions;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.practicum.explorewithme.exceptions.validation.ValidationErrorResponse;
+import ru.practicum.explorewithme.exceptions.validation.Violation;
 
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class ErrorHandler {
@@ -74,6 +82,33 @@ public class ErrorHandler {
                 .message(e.getLocalizedMessage())
                 .timestamp(LocalDateTime.now())
                 .build();
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        FieldError error = e.getBindingResult().getFieldErrors().get(0);
+        return ApiError.builder()
+                .status(HttpStatus.BAD_REQUEST)
+                .reason("Bad validation")
+                .message("Field '" + error.getField() + "'. Error - "  + error.getDefaultMessage())
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    @ResponseBody
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ValidationErrorResponse onConstraintValidationException(ConstraintViolationException e) {
+        final List<Violation> violations = e.getConstraintViolations().stream()
+                .map(
+                        violation -> new Violation(
+                                violation.getPropertyPath().toString(),
+                                violation.getMessage()
+                        )
+                )
+                .collect(Collectors.toList());
+        return new ValidationErrorResponse(violations);
     }
 
 //    @ExceptionHandler(Throwable.class)

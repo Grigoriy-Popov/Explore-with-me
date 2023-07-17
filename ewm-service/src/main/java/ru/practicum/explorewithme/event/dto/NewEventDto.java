@@ -24,38 +24,38 @@ import static ru.practicum.explorewithme.Constants.DATE_TIME_PATTERN;
 @NoArgsConstructor
 @Builder
 public class NewEventDto {
-    @NotBlank
-    @Size(min = 20, max = 2000)
+    @NotBlank(message = "Annotation can not be empty")
+    @Size(min = 20, max = 2000, message = "Minimal length of annotation is 20 symbols, maximum - 2000")
     private String annotation;
 
-    @NotNull
+    @NotNull(message = "Category id can not be empty")
     private Long category;
 
-    @NotBlank
-    @Size(min = 20, max = 7000)
+    @NotBlank(message = "Description can not be empty")
+    @Size(min = 20, max = 7000, message = "Minimal length of description is 20 symbols, maximum - 7000")
     private String description;
 
-    @NotNull
+    @NotNull(message = "Event date can not be empty")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonFormat(pattern = DATE_TIME_PATTERN)
     private LocalDateTime eventDate;
 
-    @NotNull
+    @NotNull(message = "Location can not be empty")
     private Location location;
 
-    @NotNull
+    @NotNull(message = "Event should be paid or not")
     private Boolean paid;
 
-    @PositiveOrZero
-    @NotNull
+    @PositiveOrZero(message = "Participation limit can not be negative")
+    @NotNull(message = "Participation limit can not be empty")
     private Integer participantLimit;
 
-    @NotNull
+    @NotNull(message = "Event should be with request moderation or without")
     private Boolean requestModeration;
 
-    @NotBlank
-    @Size(min = 3, max = 120)
+    @NotBlank(message = "Title can not be empty")
+    @Size(min = 3, max = 120, message = "Minimal length of title is 3 symbols, maximum - 120")
     private String title;
 
 }

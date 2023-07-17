@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.practicum.explorewithme.event.State;
 import ru.practicum.explorewithme.category.dto.CategoryDto;
+import ru.practicum.explorewithme.event.State;
 import ru.practicum.explorewithme.event.location.Location;
 import ru.practicum.explorewithme.user.dto.ShortUserDto;
 

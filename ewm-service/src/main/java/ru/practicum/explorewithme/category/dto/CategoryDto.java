@@ -15,7 +15,7 @@ import javax.validation.constraints.NotEmpty;
 public class CategoryDto {
     private Long id;
 
-    @NotBlank
-    @NotEmpty
+//    @NotBlank(message = "Name can not be empty")
+    @NotEmpty(message = "Name can not be empty")
     private String name;
 }

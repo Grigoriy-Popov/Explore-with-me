@@ -21,12 +21,12 @@ import static ru.practicum.explorewithme.Constants.DATE_TIME_PATTERN;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdminUpdateEventRequest {
-    @Size(min = 20, max = 2000)
+    @Size(min = 20, max = 2000, message = "Minimal length of annotation is 20 symbols, maximum - 2000")
     private String annotation;
 
     private Long category;
 
-    @Size(min = 20, max = 7000)
+    @Size(min = 20, max = 7000, message = "Minimal length of description is 20 symbols, maximum - 7000")
     private String description;
 
     @JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -42,6 +42,6 @@ public class AdminUpdateEventRequest {
 
     private Boolean requestModeration;
 
-    @Size(min = 3, max = 120)
+    @Size(min = 3, max = 120, message = "Minimal length of title is 3 symbols, maximum - 120")
     private String title;
 }
