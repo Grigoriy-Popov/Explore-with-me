@@ -87,10 +87,10 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     public ParticipationRequest confirmRequestByInitiator(Long userId, Long eventId, Long reqId) {
         userService.checkExistenceById(userId);
         Event event = eventService.getEventById(eventId);
-        ParticipationRequest request = getRequestById(reqId);
         if (!userId.equals(event.getInitiator().getId())) {
             throw new AccessDeniedException("Only initiator can confirm the request");
         }
+        ParticipationRequest request = getRequestById(reqId);
         if (!request.getStatus().equals(RequestStatus.PENDING)) {
             throw new IncorrectStateException("You can confirm only pending requests");
         }
@@ -112,10 +112,10 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     public ParticipationRequest rejectRequestByInitiator(Long userId, Long eventId, Long reqId) {
         userService.checkExistenceById(userId);
         Event event = eventService.getEventById(eventId);
-        ParticipationRequest request = getRequestById(reqId);
         if (!userId.equals(event.getInitiator().getId())) {
             throw new AccessDeniedException("Only initiator can reject the request");
         }
+        ParticipationRequest request = getRequestById(reqId);
         if (!request.getStatus().equals(RequestStatus.PENDING)) {
             throw new IncorrectStateException("You can reject only pending requests");
         }

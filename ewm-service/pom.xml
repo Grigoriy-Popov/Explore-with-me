@@ -17,6 +17,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <org.apache.httpcomponents.version>4.5.14</org.apache.httpcomponents.version>
     </properties>
 
     <dependencies>
@@ -29,6 +30,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
+            <version>${org.apache.httpcomponents.version}</version>
         </dependency>
 
     </dependencies>

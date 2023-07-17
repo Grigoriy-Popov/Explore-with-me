@@ -25,6 +25,9 @@
 		<java.version>11</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<snakeyaml.version>1.31</snakeyaml.version>
+		<org.postgresql.version>42.5.1</org.postgresql.version>
+		<com.h2database.version>2.2.220</com.h2database.version>
+		<org.projectlombok.version>1.18.28</org.projectlombok.version>
 		<org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
 	</properties>
 
@@ -43,19 +46,21 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.5.1</version>
+			<version>${org.postgresql.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
+			<version>${com.h2database.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<version>${org.projectlombok.version}</version>
 			<optional>true</optional>
 		</dependency>
 
