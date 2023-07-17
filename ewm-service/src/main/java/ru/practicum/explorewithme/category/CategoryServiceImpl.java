@@ -19,7 +19,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final EventRepository eventRepository;
 
     @Override
-    public Category createCategory(Category category) {
+    public Category create(Category category) {
         try {
             return categoryRepository.save(category);
         } catch (DataIntegrityViolationException e) {
@@ -28,20 +28,20 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> getAllCategories(Integer from, Integer size) {
+    public List<Category> getAll(Integer from, Integer size) {
         Pageable page = PageRequest.of(from / size, size);
         return categoryRepository.findAll(page).getContent();
     }
 
     @Override
-    public Category getCategoryById(Long categoryId) {
+    public Category getById(Long categoryId) {
         return categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new NotFoundException(String.format("Category with id %d not found", categoryId)));
     }
 
     @Override
-    public Category editCategory(Category category) {
-        Category categoryToUpdate = getCategoryById(category.getId());
+    public Category edit(Category category) {
+        Category categoryToUpdate = getById(category.getId());
         categoryToUpdate.setName(category.getName());
         try {
             return categoryRepository.save(categoryToUpdate);
@@ -51,8 +51,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void deleteCategory(Long categoryId) {
-        Category category = getCategoryById(categoryId); // check existence of category
+    public void deleteById(Long categoryId) {
+        Category category = getById(categoryId); // check existence of category
         if (eventRepository.existsByCategoryId(categoryId)) {
             throw new AccessDeniedException("You can't delete a category while there is at least " +
                     "one event in that category");

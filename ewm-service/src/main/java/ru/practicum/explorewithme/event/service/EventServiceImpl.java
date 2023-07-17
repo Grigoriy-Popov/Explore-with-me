@@ -44,22 +44,22 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
     private final StatClient statClient;
 
     @Override
-    public Event getEventById(Long eventId) {
+    public Event getById(Long eventId) {
         return eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException(String.format("Event with id %d not found", eventId)));
     }
 
     //PUBLIC
     @Override
-    public List<Event> getAllEventsByPublicUser(String text, List<Long> categories, Boolean paid,
-                                                LocalDateTime rangeStart, LocalDateTime rangeEnd, Boolean onlyAvailable,
-                                                String sort, int from, int size, String ip, String uri) {
+    public List<Event> getAllByPublicUser(String text, List<Long> categories, Boolean paid,
+                                          LocalDateTime rangeStart, LocalDateTime rangeEnd, Boolean onlyAvailable,
+                                          String sort, int from, int size, String ip, String uri) {
         postEndpointHit(uri, ip);
         PageRequest pageRequest = PageRequest.of(from / size, size);
         LocalDateTime start = rangeStart == null ? LocalDateTime.now() : rangeStart;
         LocalDateTime end = rangeEnd == null ? LocalDateTime.MAX : rangeEnd;
         // Список приходит отсортированным по дате, если нужна сортировка по просмотрам, она происходит дальше
-        List<Event> events = eventRepository.getAllEventsByPublicUser(text, categories, paid, start, end, pageRequest);
+        List<Event> events = eventRepository.findAllByPublicUser(text, categories, paid, start, end, pageRequest);
         if (onlyAvailable) {
             events = events.stream()
                     .filter(event -> event.getParticipantLimit() >= event.getConfirmedRequests())
@@ -73,8 +73,8 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
     }
 
     @Override
-    public Event getEventByIdByPublicUser(Long eventId, String ip, String uri) {
-        Event event = getEventById(eventId);
+    public Event getByIdByPublicUser(Long eventId, String ip, String uri) {
+        Event event = getById(eventId);
         if (event.getState() != State.PUBLISHED) {
             throw new IncorrectStateException("You can view only published events");
         }
@@ -85,12 +85,12 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
 
     //PRIVATE
     @Override
-    public Event createEvent(Event event, Long userId, Long categoryId) {
+    public Event create(Event event, Long userId, Long categoryId) {
         if (event.getEventDate().isBefore(LocalDateTime.now().plusHours(2))) {
             throw new IncorrectDateException("Event cannot begin earlier than 2 hours later");
         }
-        User initiator = userService.getUserById(userId);
-        Category category = categoryService.getCategoryById(categoryId);
+        User initiator = userService.getById(userId);
+        Category category = categoryService.getById(categoryId);
         Location location = locationRepository.save(event.getLocation());
         event.setInitiator(initiator);
         event.setCategory(category);
@@ -101,7 +101,7 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
 
     @Override
     public List<Event> getAllInitiatorEvents(Long userId, Integer from, Integer size) {
-        User user = userService.getUserById(userId);
+        User user = userService.getById(userId);
         Pageable page = PageRequest.of(from / size, size);
         List<Event> initiatorEvents = eventRepository.findAllByInitiator(user, page);
         initiatorEvents.forEach(this::setConfirmedRequestsAndViews);
@@ -109,9 +109,9 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
     }
 
     @Override
-    public Event editEventByUser(Long userId, UpdateEventRequest updateEventRequest) {
+    public Event editByUser(Long userId, UpdateEventRequest updateEventRequest) {
         userService.checkExistenceById(userId);
-        Event event = getEventById(updateEventRequest.getEventId());
+        Event event = getById(updateEventRequest.getEventId());
         if (event.getState() != State.CANCELED && event.getState() != State.PENDING) {
             throw new IncorrectStateException("You can edit only canceled or pending events");
         }
@@ -133,7 +133,7 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
             event.setState(State.PENDING);
         }
         event.setAnnotation(updateEventRequest.getAnnotation());
-        Category category = categoryService.getCategoryById(updateEventRequest.getCategory());
+        Category category = categoryService.getById(updateEventRequest.getCategory());
         event.setCategory(category);
         event.setDescription(updateEventRequest.getDescription());
         event.setEventDate(updateEventRequest.getEventDate());
@@ -144,9 +144,9 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
     }
 
     @Override
-    public Event getEventByIdByInitiator(Long userId, Long eventId) {
+    public Event getByIdByInitiator(Long userId, Long eventId) {
         userService.checkExistenceById(userId);
-        Event event = getEventById(eventId);
+        Event event = getById(eventId);
         if (!userId.equals(event.getInitiator().getId())) {
             throw new AccessDeniedException("Only initiator can view this information");
         }
@@ -155,9 +155,9 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
     }
 
     @Override
-    public Event cancelEventByInitiator(Long userId, Long eventId) {
+    public Event cancelByInitiator(Long userId, Long eventId) {
         userService.checkExistenceById(userId);
-        Event event = getEventById(eventId);
+        Event event = getById(eventId);
         if (!userId.equals(event.getInitiator().getId())) {
             throw new AccessDeniedException("Only initiator can cancel the event");
         }
@@ -187,15 +187,15 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
         LocalDateTime end = rangeEnd == null ? LocalDateTime.MAX : rangeEnd;
         Pageable page = PageRequest.of(from / size, size);
         List<Event> events = eventRepository
-                .getEventsByAdmin(users, stateList, categories, start, end, page);
+                .findByAdmin(users, stateList, categories, start, end, page);
         events.forEach(this::setConfirmedRequestsAndViews);
         return events;
     }
 
     @Override
-    public Event editEventByAdmin(Long eventId, AdminUpdateEventRequest adminUpdateEventRequest) {
-        Event event = getEventById(eventId);
-        Category category = categoryService.getCategoryById(adminUpdateEventRequest.getCategory());
+    public Event editByAdmin(Long eventId, AdminUpdateEventRequest adminUpdateEventRequest) {
+        Event event = getById(eventId);
+        Category category = categoryService.getById(adminUpdateEventRequest.getCategory());
         if (adminUpdateEventRequest.getAnnotation() != null) {
             event.setAnnotation(adminUpdateEventRequest.getAnnotation());
         }
@@ -226,8 +226,8 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
     }
 
     @Override
-    public Event publishEventByAdmin(Long eventId) {
-        Event event = getEventById(eventId);
+    public Event publishByAdmin(Long eventId) {
+        Event event = getById(eventId);
         if (event.getState() != State.PENDING) {
             throw new IncorrectStateException("Only pending events can be published");
         }
@@ -243,8 +243,8 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
     }
 
     @Override
-    public Event rejectEventByAdmin(Long eventId) {
-        Event event = getEventById(eventId);
+    public Event rejectByAdmin(Long eventId) {
+        Event event = getById(eventId);
         if (event.getState() != State.PENDING) {
             throw new IncorrectDateException("Only pending events can be canceled");
         }
@@ -273,7 +273,7 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
 
     private Integer getViews(Event event) {
         ResponseEntity<Object> responseEntity = statClient.getVewStats(
-                eventRepository.getMinCreationDate(),
+                eventRepository.findMinCreationDate(),
                 LocalDateTime.now(),
                 List.of(String.format("/events/%d", event.getId())),
                 false);

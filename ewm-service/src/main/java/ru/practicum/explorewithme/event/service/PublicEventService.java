@@ -6,11 +6,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PublicEventService {
-    Event getEventById(Long eventId);
+    Event getById(Long eventId);
 
-    List<Event> getAllEventsByPublicUser(String text, List<Long> categories, Boolean paid, LocalDateTime rangeStart,
-                                         LocalDateTime rangeEnd, Boolean onlyAvailable, String sort, int from, int size,
-                                         String ip, String uri);
+    List<Event> getAllByPublicUser(String text, List<Long> categories, Boolean paid, LocalDateTime rangeStart,
+                                   LocalDateTime rangeEnd, Boolean onlyAvailable, String sort, int from, int size,
+                                   String ip, String uri);
 
-    Event getEventByIdByPublicUser(Long eventId, String ip, String uri);
+    Event getByIdByPublicUser(Long eventId, String ip, String uri);
 }

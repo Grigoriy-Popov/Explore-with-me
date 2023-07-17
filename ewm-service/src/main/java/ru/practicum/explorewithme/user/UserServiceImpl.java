@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public User createUser(User user) {
+    public User create(User user) {
         try {
             return userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(Long userId) {
+    public User getById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(String.format("User with id %d not found", userId)));
     }
@@ -38,14 +38,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUsers(List<Long> usersIdList, Integer from, Integer size) {
+    public List<User> getAll(List<Long> usersIdList, Integer from, Integer size) {
         Pageable page = PageRequest.of(from / size, size);
         return userRepository.findAllByIdIn(usersIdList, page);
     }
 
     @Override
-    public User editUser(User updateUser, Long userId) {
-        User user = getUserById(userId);
+    public User edit(User updateUser, Long userId) {
+        User user = getById(userId);
         if (updateUser.getName() != null) {
             user.setName(updateUser.getName());
         }
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(Long userId) {
+    public void delete(Long userId) {
         userRepository.deleteById(userId);
     }
 }

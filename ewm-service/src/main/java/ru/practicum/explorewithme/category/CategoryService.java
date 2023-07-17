@@ -4,14 +4,14 @@ import java.util.List;
 
 public interface CategoryService {
 
-    Category createCategory(Category category);
+    Category create(Category category);
 
-    List<Category> getAllCategories(Integer from, Integer size);
+    List<Category> getAll(Integer from, Integer size);
 
-    Category getCategoryById(Long categoryId);
+    Category getById(Long categoryId);
 
-    Category editCategory(Category category);
+    Category edit(Category category);
 
-    void deleteCategory(Long categoryId);
+    void deleteById(Long categoryId);
 
 }

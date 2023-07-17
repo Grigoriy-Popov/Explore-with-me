@@ -21,15 +21,15 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     private final PublicEventService eventService;
     private final UserService userService;
 
-    public ParticipationRequest getRequestById(Long requestId) {
+    public ParticipationRequest getById(Long requestId) {
         return participationRequestRepository.findById(requestId)
                 .orElseThrow(() -> new NotFoundException(String.format("Request with id %d not found", requestId)));
     }
 
     @Override
-    public ParticipationRequest createRequest(Long userId, Long eventId) {
-        Event event = eventService.getEventById(eventId);
-        User user = userService.getUserById(userId);
+    public ParticipationRequest create(Long userId, Long eventId) {
+        Event event = eventService.getById(eventId);
+        User user = userService.getById(userId);
         if (participationRequestRepository.existsByRequesterIdAndEventId(userId, eventId)) {
             throw new AlreadyExistsException(String.format("Request from user with name %s to event with title %s" +
                     "is already exists", user.getName(), event.getTitle()));
@@ -61,9 +61,9 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     }
 
     @Override
-    public ParticipationRequest cancelRequestByRequester(Long userId, Long requestId) {
+    public ParticipationRequest cancelByRequester(Long userId, Long requestId) {
         userService.checkExistenceById(userId);
-        ParticipationRequest request = getRequestById(requestId);
+        ParticipationRequest request = getById(requestId);
         if (!request.getRequester().getId().equals(userId)) {
             throw new AccessDeniedException("Only requester can cancel his request");
         }
@@ -79,7 +79,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     @Override
     public List<ParticipationRequest> getEventParticipationRequestsByInitiator(Long userId, Long eventId) {
         userService.checkExistenceById(userId);
-        Event event = eventService.getEventById(eventId);
+        Event event = eventService.getById(eventId);
         if (!userId.equals(event.getInitiator().getId())) {
             throw new AccessDeniedException("Only initiator can view this information");
         }
@@ -87,13 +87,13 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     }
 
     @Override
-    public ParticipationRequest confirmRequestByInitiator(Long userId, Long eventId, Long reqId) {
+    public ParticipationRequest confirmByInitiator(Long userId, Long eventId, Long reqId) {
         userService.checkExistenceById(userId);
-        Event event = eventService.getEventById(eventId);
+        Event event = eventService.getById(eventId);
         if (!userId.equals(event.getInitiator().getId())) {
             throw new AccessDeniedException("Only initiator can confirm the request");
         }
-        ParticipationRequest request = getRequestById(reqId);
+        ParticipationRequest request = getById(reqId);
         if (!request.getStatus().equals(RequestStatus.PENDING)) {
             throw new IncorrectStateException("You can confirm only pending requests");
         }
@@ -112,13 +112,13 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     }
 
     @Override
-    public ParticipationRequest rejectRequestByInitiator(Long userId, Long eventId, Long reqId) {
+    public ParticipationRequest rejectByInitiator(Long userId, Long eventId, Long reqId) {
         userService.checkExistenceById(userId);
-        Event event = eventService.getEventById(eventId);
+        Event event = eventService.getById(eventId);
         if (!userId.equals(event.getInitiator().getId())) {
             throw new AccessDeniedException("Only initiator can reject the request");
         }
-        ParticipationRequest request = getRequestById(reqId);
+        ParticipationRequest request = getById(reqId);
         if (!request.getStatus().equals(RequestStatus.PENDING)) {
             throw new IncorrectStateException("You can reject only pending requests");
         }

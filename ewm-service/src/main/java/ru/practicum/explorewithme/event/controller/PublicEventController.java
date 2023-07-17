@@ -30,7 +30,7 @@ public class PublicEventController {
     private final EventMapperMapStruct eventMapper;
 
     @GetMapping
-    public List<ShortEventDto> getAllEventsByPublicUser(@RequestParam(required = false, defaultValue = "") String text,
+    public List<ShortEventDto> getAllByPublicUser(@RequestParam(required = false, defaultValue = "") String text,
             @RequestParam(required = false) List<Long> categories,
             @RequestParam(required = false) Boolean paid,
             @RequestParam(required = false) @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime rangeStart,
@@ -42,16 +42,16 @@ public class PublicEventController {
         log.info("hit endpoint - getAllEventsByPublicUser");
 //        return EventMapper.toShortDto(eventService.getAllEventsByPublicUser(text, categories, paid, rangeStart,
 //                rangeEnd, onlyAvailable, sort, from, size, request.getRemoteAddr(), request.getRequestURI()));
-        return eventMapper.toShortDto(eventService.getAllEventsByPublicUser(text, categories, paid, rangeStart,
+        return eventMapper.toShortDto(eventService.getAllByPublicUser(text, categories, paid, rangeStart,
                 rangeEnd, onlyAvailable, sort, from, size, request.getRemoteAddr(), request.getRequestURI()));
     }
 
     @GetMapping(path = "/{eventId}")
-    public FullEventDto getEventByIdByPublicUser(@PathVariable Long eventId, HttpServletRequest request) {
+    public FullEventDto getByIdByPublicUser(@PathVariable Long eventId, HttpServletRequest request) {
         log.info("hit endpoint - getEventByIdByPublicUser, eventId - {}", eventId);
 //        return EventMapper.toFullDto(eventService.getEventByIdByPublicUser(eventId, request.getRemoteAddr(),
 //                request.getRequestURI()));
-        return eventMapper.toFullDto(eventService.getEventByIdByPublicUser(eventId, request.getRemoteAddr(),
+        return eventMapper.toFullDto(eventService.getByIdByPublicUser(eventId, request.getRemoteAddr(),
                 request.getRequestURI()));
     }
 }

@@ -19,15 +19,15 @@ public class CompilationServiceImpl implements CompilationService {
     private final PublicEventService eventService;
 
     @Override
-    public Compilation getCompilationById(Long compId) {
+    public Compilation getById(Long compId) {
         return compilationRepository.findById(compId)
                 .orElseThrow(() -> new NotFoundException(String.format("Compilation with id %d not found", compId)));
     }
 
     @Override
-    public Compilation createCompilation(NewCompilationDto newCompilationDto) {
+    public Compilation create(NewCompilationDto newCompilationDto) {
         List<Event> events = newCompilationDto.getEvents().stream()
-                .map(eventService::getEventById)
+                .map(eventService::getById)
                 .collect(Collectors.toList());
         Compilation compilation = Compilation.builder()
                 .events(events)
@@ -38,14 +38,14 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
-    public void deleteCompilationById(Long compId) {
+    public void deleteById(Long compId) {
         compilationRepository.deleteById(compId);
     }
 
     @Override
     public void deleteEventFromCompilation(Long compId, Long eventId) {
-        Compilation compilation = getCompilationById(compId);
-        Event event = eventService.getEventById(eventId);
+        Compilation compilation = getById(compId);
+        Event event = eventService.getById(eventId);
         List<Event> events = compilation.getEvents();
         events.remove(event);
         compilation.setEvents(events);
@@ -54,8 +54,8 @@ public class CompilationServiceImpl implements CompilationService {
 
     @Override
     public void addEventToCompilation(Long compId, Long eventId) {
-        Compilation compilation = getCompilationById(compId);
-        Event event = eventService.getEventById(eventId);
+        Compilation compilation = getById(compId);
+        Event event = eventService.getById(eventId);
         List<Event> events = compilation.getEvents();
         events.add(event);
         compilation.setEvents(events);
@@ -63,22 +63,22 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
-    public void pinCompilation(Long compId) {
-        Compilation compilation = getCompilationById(compId);
+    public void pin(Long compId) {
+        Compilation compilation = getById(compId);
         compilation.setPinned(true);
         compilationRepository.save(compilation);
     }
 
     @Override
-    public void unpinCompilation(Long compId) {
-        Compilation compilation = getCompilationById(compId);
+    public void unpin(Long compId) {
+        Compilation compilation = getById(compId);
         compilation.setPinned(false);
         compilationRepository.save(compilation);
     }
 
     @Override
-    public List<Compilation> getAllCompilations(Boolean pinned, Integer from, Integer size) {
+    public List<Compilation> getAll(Boolean pinned, Integer from, Integer size) {
         Pageable page = PageRequest.of(from / size, size);
-        return compilationRepository.getAllByPinned(pinned, page);
+        return compilationRepository.findAllByPinned(pinned, page);
     }
 }

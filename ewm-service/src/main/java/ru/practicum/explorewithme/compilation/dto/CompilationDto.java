@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.explorewithme.event.dto.ShortEventDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -14,7 +15,11 @@ import java.util.List;
 @AllArgsConstructor
 public class CompilationDto {
     private Long id;
-    private List<ShortEventDto> events;
+
+    @Builder.Default
+    private List<ShortEventDto> events = new ArrayList<>();
+
     private boolean pinned;
+
     private String title;
 }

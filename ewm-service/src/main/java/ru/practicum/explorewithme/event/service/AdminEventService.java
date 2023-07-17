@@ -10,9 +10,9 @@ public interface AdminEventService {
     List<Event> getEventsByAdmin(List<Long> users, List<String> states, List<Long> categories,
                                  LocalDateTime rangeStart, LocalDateTime rangeEnd, int from, int size);
 
-    Event editEventByAdmin(Long eventId, AdminUpdateEventRequest adminUpdateEventRequest);
+    Event editByAdmin(Long eventId, AdminUpdateEventRequest adminUpdateEventRequest);
 
-    Event publishEventByAdmin(Long eventId);
+    Event publishByAdmin(Long eventId);
 
-    Event rejectEventByAdmin(Long eventId);
+    Event rejectByAdmin(Long eventId);
 }

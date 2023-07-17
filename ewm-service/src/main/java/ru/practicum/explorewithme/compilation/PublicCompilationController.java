@@ -24,17 +24,17 @@ public class PublicCompilationController {
     private final CompilationService compilationService;
 
     @GetMapping
-    public List<CompilationDto> getAllCompilations(@RequestParam(value = "pinned", required = false,
+    public List<CompilationDto> getAll(@RequestParam(value = "pinned", required = false,
             defaultValue = "true") Boolean pinned,
             @PositiveOrZero @RequestParam(name = "from", required = false, defaultValue = "0") Integer from,
             @Positive @RequestParam(name = "size", required = false, defaultValue = "10") Integer size) {
         log.info("hit endpoint - getAllCompilations: pinned - {}", pinned);
-        return CompilationMapper.toDto(compilationService.getAllCompilations(pinned, from, size));
+        return CompilationMapper.toDto(compilationService.getAll(pinned, from, size));
     }
 
     @GetMapping("/{compId}")
-    public CompilationDto getCompilationById(@PathVariable Long compId) {
+    public CompilationDto getById(@PathVariable Long compId) {
         log.info("hit endpoint - getCompilationById: compId - {}", compId);
-        return CompilationMapper.toDto(compilationService.getCompilationById(compId));
+        return CompilationMapper.toDto(compilationService.getById(compId));
     }
 }

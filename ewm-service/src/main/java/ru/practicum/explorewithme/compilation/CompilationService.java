@@ -7,21 +7,21 @@ import java.util.List;
 public interface CompilationService {
 
     //ADMIN
-    Compilation createCompilation(NewCompilationDto newCompilationDto);
+    Compilation create(NewCompilationDto newCompilationDto);
 
-    void deleteCompilationById(Long compId);
+    void deleteById(Long compId);
 
     void deleteEventFromCompilation(Long compId, Long eventId);
 
     void addEventToCompilation(Long compId, Long eventId);
 
-    void pinCompilation(Long compId);
+    void pin(Long compId);
 
-    void unpinCompilation(Long compId);
+    void unpin(Long compId);
 
     //PUBLIC
-    List<Compilation> getAllCompilations(Boolean pinned, Integer from, Integer size);
+    List<Compilation> getAll(Boolean pinned, Integer from, Integer size);
 
-    Compilation getCompilationById(Long compilationId);
+    Compilation getById(Long compilationId);
 
 }

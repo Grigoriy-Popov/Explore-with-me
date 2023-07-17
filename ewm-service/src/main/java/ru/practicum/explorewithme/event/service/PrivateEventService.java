@@ -8,11 +8,11 @@ import java.util.List;
 public interface PrivateEventService {
     List<Event> getAllInitiatorEvents(Long userId, Integer from, Integer size);
 
-    Event editEventByUser(Long userId, UpdateEventRequest updateEventRequest);
+    Event editByUser(Long userId, UpdateEventRequest updateEventRequest);
 
-    Event createEvent(Event event, Long userId, Long categoryId);
+    Event create(Event event, Long userId, Long categoryId);
 
-    Event getEventByIdByInitiator(Long userId, Long eventId);
+    Event getByIdByInitiator(Long userId, Long eventId);
 
-    Event cancelEventByInitiator(Long userId, Long eventId);
+    Event cancelByInitiator(Long userId, Long eventId);
 }

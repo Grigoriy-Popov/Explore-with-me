@@ -15,15 +15,15 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findAllByInitiator(User user, Pageable page);
 
     @Query("SELECT MIN(e.createdOn) FROM Event e")
-    LocalDateTime getMinCreationDate();
+    LocalDateTime findMinCreationDate();
 
     @Query("SELECT e FROM Event e WHERE " +
             "e.initiator.id IN :users " +
             "AND e.state IN :states " +
             "AND e.category.id IN :categories " +
             "AND e.eventDate BETWEEN :rangeStart AND :rangeEnd")
-    List<Event> getEventsByAdmin(List<Long> users, List<State> states, List<Long> categories,
-                                 LocalDateTime rangeStart, LocalDateTime rangeEnd, Pageable page);
+    List<Event> findByAdmin(List<Long> users, List<State> states, List<Long> categories,
+                            LocalDateTime rangeStart, LocalDateTime rangeEnd, Pageable page);
 
     @Query("SELECT e FROM Event e " +
             "WHERE ((UPPER(e.annotation) LIKE UPPER(CONCAT('%', :text, '%')) " +
@@ -32,7 +32,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             "AND e.paid = :paid " +
             "AND e.eventDate BETWEEN :start AND :end) " +
             "ORDER BY e.eventDate DESC")
-    List<Event> getAllEventsByPublicUser(String text, List<Long> categories, Boolean paid, LocalDateTime start,
-                             LocalDateTime end,  Pageable pageable);
+    List<Event> findAllByPublicUser(String text, List<Long> categories, Boolean paid, LocalDateTime start,
+                                    LocalDateTime end, Pageable pageable);
 
 }

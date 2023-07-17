@@ -30,11 +30,11 @@ import static ru.practicum.explorewithme.Constants.DATE_TIME_PATTERN;
 @Validated
 @Slf4j
 public class AdminEventController {
-    private final AdminEventService eventService;
+    private final AdminEventService adminEventService;
     private final EventMapperMapStruct eventMapper;
 
     @GetMapping
-    public List<FullEventDto> getEventsByAdmin(@RequestParam(required = false) List<Long> users,
+    public List<FullEventDto> getAll(@RequestParam(required = false) List<Long> users,
             @RequestParam(required = false) List<String> states,
             @RequestParam(required = false) List<Long> categories,
             @RequestParam(required = false) @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime rangeStart,
@@ -44,29 +44,29 @@ public class AdminEventController {
         log.info("hit endpoint - getEventsByAdmin, states - {}", states);
 //        return EventMapper.toFullDto(eventService
 //                .getEventsByAdmin(users, states, categories, rangeStart, rangeEnd, from, size));
-        return eventMapper.toFullDto(eventService
+        return eventMapper.toFullDto(adminEventService
                 .getEventsByAdmin(users, states, categories, rangeStart, rangeEnd, from, size));
     }
 
     @PutMapping("/{eventId}")
-    public FullEventDto editEventByAdmin(@PathVariable Long eventId,
+    public FullEventDto edit(@PathVariable Long eventId,
                                          @RequestBody AdminUpdateEventRequest adminUpdateEventRequest) {
         log.info("hit endpoint - editEventByAdmin");
 //        return EventMapper.toFullDto(eventService.editEventByAdmin(eventId, adminUpdateEventRequest));
-        return eventMapper.toFullDto(eventService.editEventByAdmin(eventId, adminUpdateEventRequest));
+        return eventMapper.toFullDto(adminEventService.editByAdmin(eventId, adminUpdateEventRequest));
     }
 
     @PatchMapping("/{eventId}/publish")
-    public FullEventDto publishEventByAdmin(@PathVariable Long eventId) {
+    public FullEventDto publish(@PathVariable Long eventId) {
         log.info("hit endpoint - publishEventByAdmin");
 //        return EventMapper.toFullDto(eventService.publishEventByAdmin(eventId));
-        return eventMapper.toFullDto(eventService.publishEventByAdmin(eventId));
+        return eventMapper.toFullDto(adminEventService.publishByAdmin(eventId));
     }
 
     @PatchMapping("/{eventId}/reject")
-    public FullEventDto rejectEventByAdmin(@PathVariable Long eventId) {
+    public FullEventDto reject(@PathVariable Long eventId) {
         log.info("hit endpoint - rejectEventByAdmin");
 //        return EventMapper.toFullDto(eventService.rejectEventByAdmin(eventId));
-        return eventMapper.toFullDto(eventService.rejectEventByAdmin(eventId));
+        return eventMapper.toFullDto(adminEventService.rejectByAdmin(eventId));
     }
 }

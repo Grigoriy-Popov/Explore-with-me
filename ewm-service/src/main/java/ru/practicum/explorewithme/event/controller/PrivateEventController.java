@@ -32,7 +32,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class PrivateEventController {
-    private final PrivateEventService eventService;
+    private final PrivateEventService privateEventService;
     private final ParticipationRequestService participationRequestService;
     private final EventMapperMapStruct eventMapper;
     private final ParticipationRequestMapperMapStruct requestMapper;
@@ -43,37 +43,37 @@ public class PrivateEventController {
                                                      @Positive @RequestParam(name = "size", required = false, defaultValue = "10") Integer size) {
         log.info("hit endpoint - getAllInitiatorEvents by user with id - {}", userId);
 //        return EventMapper.toShortDto(eventService.getAllInitiatorEvents(userId, from, size));
-        return eventMapper.toShortDto(eventService.getAllInitiatorEvents(userId, from, size));
+        return eventMapper.toShortDto(privateEventService.getAllInitiatorEvents(userId, from, size));
     }
 
     @PatchMapping
-    public FullEventDto editEventByUser(@PathVariable Long userId,
+    public FullEventDto editByUser(@PathVariable Long userId,
                                         @RequestBody @Valid UpdateEventRequest updateEventRequest) {
         log.info("hit endpoint - editEventByUser by user with id - {}", userId);
 //        return EventMapper.toFullDto(eventService.editEventByUser(userId, updateEventRequest));
-        return eventMapper.toFullDto(eventService.editEventByUser(userId, updateEventRequest));
+        return eventMapper.toFullDto(privateEventService.editByUser(userId, updateEventRequest));
     }
 
     @PostMapping
-    public FullEventDto createEvent(@RequestBody @Valid NewEventDto newEventDto, @PathVariable Long userId) {
+    public FullEventDto create(@RequestBody @Valid NewEventDto newEventDto, @PathVariable Long userId) {
         log.info("hit endpoint - createEvent - {}", newEventDto);
         Event event = EventMapper.toEntityFromNewEventDto(newEventDto);
 //        return EventMapper.toFullDto(eventService.createEvent(event, userId, newEventDto.getCategory()));
-        return eventMapper.toFullDto(eventService.createEvent(event, userId, newEventDto.getCategory()));
+        return eventMapper.toFullDto(privateEventService.create(event, userId, newEventDto.getCategory()));
     }
 
     @GetMapping("/{eventId}")
-    public FullEventDto getEventByIdByInitiator(@PathVariable Long userId, @PathVariable Long eventId) {
+    public FullEventDto getByIdByInitiator(@PathVariable Long userId, @PathVariable Long eventId) {
         log.info("hit endpoint - getEventByIdByInitiator");
 //        return EventMapper.toFullDto(eventService.getEventByIdByInitiator(userId, eventId));
-        return eventMapper.toFullDto(eventService.getEventByIdByInitiator(userId, eventId));
+        return eventMapper.toFullDto(privateEventService.getByIdByInitiator(userId, eventId));
     }
 
     @PatchMapping("/{eventId}")
-    public FullEventDto cancelEventByInitiator(@PathVariable Long userId, @PathVariable Long eventId) {
+    public FullEventDto cancelByInitiator(@PathVariable Long userId, @PathVariable Long eventId) {
         log.info("hit endpoint - cancelEventByInitiator");
 //        return EventMapper.toFullDto(eventService.cancelEventByInitiator(userId, eventId));
-        return eventMapper.toFullDto(eventService.cancelEventByInitiator(userId, eventId));
+        return eventMapper.toFullDto(privateEventService.cancelByInitiator(userId, eventId));
     }
 
     @GetMapping("/{eventId}/requests")
@@ -91,7 +91,7 @@ public class PrivateEventController {
                                                              @PathVariable Long reqId) {
         log.info("hit endpoint - confirmRequestByInitiator");
 //        return ParticipationRequestMapper.toDto(participationRequestService.confirmRequestByInitiator(userId, eventId, reqId));
-        return requestMapper.toDto(participationRequestService.confirmRequestByInitiator(userId, eventId, reqId));
+        return requestMapper.toDto(participationRequestService.confirmByInitiator(userId, eventId, reqId));
     }
 
     @PatchMapping("/{eventId}/requests/{reqId}/reject")
@@ -99,6 +99,6 @@ public class PrivateEventController {
                                                             @PathVariable Long reqId) {
         log.info("hit endpoint - rejectRequestByInitiator");
 //        return ParticipationRequestMapper.toDto(participationRequestService.rejectRequestByInitiator(userId, eventId, reqId));
-        return requestMapper.toDto(participationRequestService.rejectRequestByInitiator(userId, eventId, reqId));
+        return requestMapper.toDto(participationRequestService.rejectByInitiator(userId, eventId, reqId));
     }
 }

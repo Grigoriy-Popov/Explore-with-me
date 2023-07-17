@@ -29,42 +29,42 @@ public class UserController {
     private final UserMapperMapStruct mapper;
 
     @PostMapping
-    public UserDto createUser(@Valid @RequestBody UserDto userDto) {
+    public UserDto create(@Valid @RequestBody UserDto userDto) {
         log.info("hit endpoint - createUser, name - {}, email - {}", userDto.getName(), userDto.getEmail());
         User user = UserMapper.toEntity(userDto);
 //        return UserMapper.toDto(userService.createUser(user)); второй вариант маппинга - вручную
-        return mapper.toDto(userService.createUser(user));
+        return mapper.toDto(userService.create(user));
     }
 
     @GetMapping("/{userId}")
-    public UserDto getUserById(@PathVariable Long userId) {
+    public UserDto getById(@PathVariable Long userId) {
         log.info("hit endpoint - getUserById, id - {}", userId);
 //        return UserMapper.toDto(userService.getUserById(userId));
-        return mapper.toDto(userService.getUserById(userId));
+        return mapper.toDto(userService.getById(userId));
     }
 
     @GetMapping
-    public List<UserDto> getAllUsers(@RequestParam(required = false) List<Long> ids,
+    public List<UserDto> getAll(@RequestParam(required = false) List<Long> ids,
             @PositiveOrZero @RequestParam(name = "from", required = false, defaultValue = "0") Integer from,
             @Positive @RequestParam(name = "size", required = false, defaultValue = "10") Integer size) {
         log.info("hit endpoint - getAllUsers");
 //        return UserMapper.toDto(userService.getAllUsers(ids, from, size));
-        return mapper.toDto(userService.getAllUsers(ids, from, size));
+        return mapper.toDto(userService.getAll(ids, from, size));
     }
 
     @PatchMapping("/{userId}")
-    public UserDto editUser(@RequestBody UserDto userDto,
+    public UserDto edit(@RequestBody UserDto userDto,
                          @PathVariable Long userId) {
         log.info("hit endpoint - editUser, name - {}, email - {}", userDto.getName(), userDto.getEmail());
 //        User updateUser = UserMapper.fromDto(userDto);
         User updateUser = mapper.toEntity(userDto);
 //        return UserMapper.toDto(userService.editUser(updateUser, userId));
-        return mapper.toDto(userService.editUser(updateUser, userId));
+        return mapper.toDto(userService.edit(updateUser, userId));
     }
 
     @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable Long userId) {
+    public void delete(@PathVariable Long userId) {
         log.info("hit endpoint - deleteUser, id - {}", userId);
-        userService.deleteUser(userId);
+        userService.delete(userId);
     }
 }

@@ -24,13 +24,13 @@ public class AdminCompilationController {
     @PostMapping
     public CompilationDto createCompilation(@RequestBody @Validated NewCompilationDto newCompilationDto) {
         log.info("hit endpoint - createCompilation");
-        return CompilationMapper.toDto(compilationService.createCompilation(newCompilationDto));
+        return CompilationMapper.toDto(compilationService.create(newCompilationDto));
     }
 
     @DeleteMapping("/{compId}")
     public void deleteCompilationById(@PathVariable Long compId) {
         log.info("hit endpoint - deleteCompilationById - {}", compId);
-        compilationService.deleteCompilationById(compId);
+        compilationService.deleteById(compId);
     }
 
     @DeleteMapping("/{compId}/events/{eventId}")
@@ -48,12 +48,12 @@ public class AdminCompilationController {
     @PatchMapping("/{compId}/pin")
     public void pinCompilation(@PathVariable Long compId) {
         log.info("hit endpoint - pinCompilation: compilation id - {}", compId);
-        compilationService.pinCompilation(compId);
+        compilationService.pin(compId);
     }
 
     @DeleteMapping("/{compId}/pin")
     public void unpinCompilation(@PathVariable Long compId) {
         log.info("hit endpoint - unpinCompilation: compilation id - {}", compId);
-        compilationService.unpinCompilation(compId);
+        compilationService.unpin(compId);
     }
 }
