@@ -3,6 +3,7 @@ package ru.practicum.explorewithme.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -121,4 +122,15 @@ public class ErrorHandler {
 //                .timestamp(LocalDateTime.now())
 //                .build();
 //    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError onMissingServletRequestParameterException(MissingServletRequestParameterException e) {
+        return ApiError.builder()
+                .status(HttpStatus.BAD_REQUEST)
+                .reason("Missing request param")
+                .message(e.getParameterName() + " parameter is missing")
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
 }

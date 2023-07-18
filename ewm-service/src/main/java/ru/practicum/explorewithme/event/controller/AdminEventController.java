@@ -41,7 +41,7 @@ public class AdminEventController {
             @RequestParam(required = false) @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime rangeEnd,
             @PositiveOrZero @RequestParam(required = false, defaultValue = "0") int from,
             @Positive @RequestParam(required = false, defaultValue = "10") int size) {
-        log.info("hit endpoint - getEventsByAdmin, states - {}", states);
+        log.trace("hit endpoint - getEventsByAdmin, states - {}", states);
 //        return EventMapper.toFullDto(eventService
 //                .getEventsByAdmin(users, states, categories, rangeStart, rangeEnd, from, size));
         return eventMapper.toFullDto(adminEventService
@@ -51,21 +51,21 @@ public class AdminEventController {
     @PutMapping("/{eventId}")
     public FullEventDto edit(@PathVariable Long eventId,
                                          @RequestBody AdminUpdateEventRequest adminUpdateEventRequest) {
-        log.info("hit endpoint - editEventByAdmin");
+        log.trace("hit endpoint - editEventByAdmin");
 //        return EventMapper.toFullDto(eventService.editEventByAdmin(eventId, adminUpdateEventRequest));
         return eventMapper.toFullDto(adminEventService.editByAdmin(eventId, adminUpdateEventRequest));
     }
 
     @PatchMapping("/{eventId}/publish")
     public FullEventDto publish(@PathVariable Long eventId) {
-        log.info("hit endpoint - publishEventByAdmin");
+        log.trace("hit endpoint - publishEventByAdmin");
 //        return EventMapper.toFullDto(eventService.publishEventByAdmin(eventId));
         return eventMapper.toFullDto(adminEventService.publishByAdmin(eventId));
     }
 
     @PatchMapping("/{eventId}/reject")
     public FullEventDto reject(@PathVariable Long eventId) {
-        log.info("hit endpoint - rejectEventByAdmin");
+        log.trace("hit endpoint - rejectEventByAdmin");
 //        return EventMapper.toFullDto(eventService.rejectEventByAdmin(eventId));
         return eventMapper.toFullDto(adminEventService.rejectByAdmin(eventId));
     }

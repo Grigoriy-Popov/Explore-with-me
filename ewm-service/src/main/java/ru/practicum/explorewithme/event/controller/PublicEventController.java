@@ -39,7 +39,7 @@ public class PublicEventController {
             @RequestParam(required = false, defaultValue = "EVENT_DATE") String sort,
             @PositiveOrZero @RequestParam(required = false, defaultValue = "0") int from,
             @Positive @RequestParam(required = false, defaultValue = "10") int size, HttpServletRequest request) {
-        log.info("hit endpoint - getAllEventsByPublicUser");
+        log.trace("hit endpoint - getAllEventsByPublicUser");
 //        return EventMapper.toShortDto(eventService.getAllEventsByPublicUser(text, categories, paid, rangeStart,
 //                rangeEnd, onlyAvailable, sort, from, size, request.getRemoteAddr(), request.getRequestURI()));
         return eventMapper.toShortDto(eventService.getAllByPublicUser(text, categories, paid, rangeStart,
@@ -48,7 +48,7 @@ public class PublicEventController {
 
     @GetMapping(path = "/{eventId}")
     public FullEventDto getByIdByPublicUser(@PathVariable Long eventId, HttpServletRequest request) {
-        log.info("hit endpoint - getEventByIdByPublicUser, eventId - {}", eventId);
+        log.trace("hit endpoint - getEventByIdByPublicUser, eventId - {}", eventId);
 //        return EventMapper.toFullDto(eventService.getEventByIdByPublicUser(eventId, request.getRemoteAddr(),
 //                request.getRequestURI()));
         return eventMapper.toFullDto(eventService.getByIdByPublicUser(eventId, request.getRemoteAddr(),

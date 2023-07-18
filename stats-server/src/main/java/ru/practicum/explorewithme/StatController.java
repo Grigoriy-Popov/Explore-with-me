@@ -25,13 +25,13 @@ public class StatController {
                                    @RequestParam @DateTimeFormat(pattern = DATE_TIME_PATTERN) LocalDateTime end,
                                    @RequestParam List<String> uris,
                                    @RequestParam(required = false, defaultValue = "false") Boolean unique) {
-        log.info("getStat, uris - {}", uris);
+        log.trace("getStat, uris - {}", uris);
         return statService.getStat(start, end, uris, unique);
     }
 
     @PostMapping("/hit")
     public EndpointHit hit(@RequestBody EndpointHit endpointHit) {
-        log.info("hit");
+        log.trace("hit");
         return statService.createHit(endpointHit);
     }
 }

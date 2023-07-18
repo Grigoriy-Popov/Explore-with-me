@@ -196,10 +196,10 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
     public Event editByAdmin(Long eventId, AdminUpdateEventRequest adminUpdateEventRequest) {
         Event event = getById(eventId);
         Category category = categoryService.getById(adminUpdateEventRequest.getCategory());
+        event.setCategory(category);
         if (adminUpdateEventRequest.getAnnotation() != null) {
             event.setAnnotation(adminUpdateEventRequest.getAnnotation());
         }
-        event.setCategory(category);
         if (adminUpdateEventRequest.getDescription() != null) {
             event.setDescription(adminUpdateEventRequest.getDescription());
         }
@@ -222,7 +222,7 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
             event.setTitle(adminUpdateEventRequest.getTitle());
         }
         setConfirmedRequestsAndViews(event);
-        return event;
+        return eventRepository.save(event);
     }
 
     @Override
@@ -250,7 +250,7 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
         }
         event.setState(State.CANCELED);
         setConfirmedRequestsAndViews(event);
-        return event;
+        return eventRepository.save(event);
     }
 
     private void postEndpointHit(String uri, String ip) {

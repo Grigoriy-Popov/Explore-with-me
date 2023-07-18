@@ -28,13 +28,13 @@ public class PublicCompilationController {
             defaultValue = "true") Boolean pinned,
             @PositiveOrZero @RequestParam(name = "from", required = false, defaultValue = "0") Integer from,
             @Positive @RequestParam(name = "size", required = false, defaultValue = "10") Integer size) {
-        log.info("hit endpoint - getAllCompilations: pinned - {}", pinned);
+        log.trace("hit endpoint - getAllCompilations: pinned - {}", pinned);
         return CompilationMapper.toDto(compilationService.getAll(pinned, from, size));
     }
 
     @GetMapping("/{compId}")
     public CompilationDto getById(@PathVariable Long compId) {
-        log.info("hit endpoint - getCompilationById: compId - {}", compId);
+        log.trace("hit endpoint - getCompilationById: compId - {}", compId);
         return CompilationMapper.toDto(compilationService.getById(compId));
     }
 }

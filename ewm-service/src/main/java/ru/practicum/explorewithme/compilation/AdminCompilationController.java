@@ -23,37 +23,37 @@ public class AdminCompilationController {
 
     @PostMapping
     public CompilationDto createCompilation(@RequestBody @Validated NewCompilationDto newCompilationDto) {
-        log.info("hit endpoint - createCompilation");
+        log.trace("hit endpoint - createCompilation");
         return CompilationMapper.toDto(compilationService.create(newCompilationDto));
     }
 
     @DeleteMapping("/{compId}")
     public void deleteCompilationById(@PathVariable Long compId) {
-        log.info("hit endpoint - deleteCompilationById - {}", compId);
+        log.trace("hit endpoint - deleteCompilationById - {}", compId);
         compilationService.deleteById(compId);
     }
 
     @DeleteMapping("/{compId}/events/{eventId}")
     public void deleteEventFromCompilation(@PathVariable Long compId, @PathVariable Long eventId) {
-        log.info("hit endpoint - deleteEventFromCompilation: compilation id - {}, event id - {}", compId, eventId);
+        log.trace("hit endpoint - deleteEventFromCompilation: compilation id - {}, event id - {}", compId, eventId);
         compilationService.deleteEventFromCompilation(compId, eventId);
     }
 
     @PatchMapping("/{compId}/events/{eventId}")
     public void addEventToCompilation(@PathVariable Long compId, @PathVariable Long eventId) {
-        log.info("hit endpoint - addEventToCompilation: compilation id - {}, event id - {}", compId, eventId);
+        log.trace("hit endpoint - addEventToCompilation: compilation id - {}, event id - {}", compId, eventId);
         compilationService.addEventToCompilation(compId, eventId);
     }
 
     @PatchMapping("/{compId}/pin")
     public void pinCompilation(@PathVariable Long compId) {
-        log.info("hit endpoint - pinCompilation: compilation id - {}", compId);
+        log.trace("hit endpoint - pinCompilation: compilation id - {}", compId);
         compilationService.pin(compId);
     }
 
     @DeleteMapping("/{compId}/pin")
     public void unpinCompilation(@PathVariable Long compId) {
-        log.info("hit endpoint - unpinCompilation: compilation id - {}", compId);
+        log.trace("hit endpoint - unpinCompilation: compilation id - {}", compId);
         compilationService.unpin(compId);
     }
 }
