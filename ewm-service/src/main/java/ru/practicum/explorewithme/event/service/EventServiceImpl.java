@@ -27,6 +27,7 @@ import ru.practicum.explorewithme.user.UserService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -110,17 +111,18 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
 
     @Override
     public Event editByUser(Long userId, UpdateEventRequest updateEventRequest) {
-        userService.checkExistenceById(userId);
+        if (updateEventRequest.getEventDate().isBefore(LocalDateTime.now().plusHours(2))) {
+            throw new IncorrectDateException("Event cannot begin earlier than 2 hours later");
+        }
         Event event = getById(updateEventRequest.getEventId());
         if (event.getState() != State.CANCELED && event.getState() != State.PENDING) {
             throw new IncorrectStateException("You can edit only canceled or pending events");
         }
+        userService.checkExistenceById(userId);
         if (!userId.equals(event.getInitiator().getId())) {
             throw new AccessDeniedException("Only initiator can edit the event");
         }
-        if (updateEventRequest.getEventDate().isBefore(LocalDateTime.now().plusHours(2))) {
-            throw new IncorrectDateException("Event cannot begin earlier than 2 hours later");
-        }
+        Category category = categoryService.getById(updateEventRequest.getCategory());
         Integer confirmedRequestsAmount = participationRequestRepository.countByEventIdAndStatusIs(event.getId(),
                 RequestStatus.CONFIRMED);
         int participantLimit = updateEventRequest.getParticipantLimit();
@@ -132,9 +134,8 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
         if (event.getState() == State.CANCELED) {
             event.setState(State.PENDING);
         }
-        event.setAnnotation(updateEventRequest.getAnnotation());
-        Category category = categoryService.getById(updateEventRequest.getCategory());
         event.setCategory(category);
+        event.setAnnotation(updateEventRequest.getAnnotation());
         event.setDescription(updateEventRequest.getDescription());
         event.setEventDate(updateEventRequest.getEventDate());
         event.setPaid(updateEventRequest.getPaid());
@@ -173,29 +174,31 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
     @Override
     public List<Event> getEventsByAdmin(List<Long> users, List<String> states, List<Long> categories,
                                         LocalDateTime rangeStart, LocalDateTime rangeEnd, int from, int size) {
-        List<State> stateList = new ArrayList<>();
+        List<State> stateList;
         if (states != null) {
+            stateList = new ArrayList<>(states.size());
             states.forEach(state -> stateList.add(State.valueOf(state)));
+        } else {
+            stateList = Collections.emptyList();
         }
         if (users == null) {
-            users = new ArrayList<>();
+            users = Collections.emptyList();
         }
         if (categories == null) {
-            categories = new ArrayList<>();
+            categories = Collections.emptyList();
         }
         LocalDateTime start = rangeStart == null ? LocalDateTime.now() : rangeStart;
         LocalDateTime end = rangeEnd == null ? LocalDateTime.MAX : rangeEnd;
         Pageable page = PageRequest.of(from / size, size);
-        List<Event> events = eventRepository
-                .findByAdmin(users, stateList, categories, start, end, page);
+        List<Event> events = eventRepository.findByAdmin(users, stateList, categories, start, end, page);
         events.forEach(this::setConfirmedRequestsAndViews);
         return events;
     }
 
     @Override
     public Event editByAdmin(Long eventId, AdminUpdateEventRequest adminUpdateEventRequest) {
-        Event event = getById(eventId);
         Category category = categoryService.getById(adminUpdateEventRequest.getCategory());
+        Event event = getById(eventId);
         event.setCategory(category);
         if (adminUpdateEventRequest.getAnnotation() != null) {
             event.setAnnotation(adminUpdateEventRequest.getAnnotation());
