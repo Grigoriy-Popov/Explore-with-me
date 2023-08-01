@@ -92,9 +92,9 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
         User initiator = userService.getById(userId);
         Category category = categoryService.getById(categoryId);
         Location location = locationRepository.save(event.getLocation());
+        event.setLocation(location);
         event.setInitiator(initiator);
         event.setCategory(category);
-        event.setLocation(location);
         event.setState(State.PENDING);
         return eventRepository.save(event);
     }

@@ -37,7 +37,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         if (userId.equals(event.getInitiator().getId())) {
             throw new AccessDeniedException("Initiator of the event can't create request to his event");
         }
-        if (!event.getState().equals(State.PUBLISHED)) {
+        if (State.PUBLISHED != event.getState()) {
             throw new IncorrectStateException("You can create request only to published events");
         }
         if (!event.getParticipantLimit().equals(0) && event.getParticipantLimit() != null) {
@@ -94,7 +94,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
             throw new AccessDeniedException("Only initiator can confirm the request");
         }
         ParticipationRequest request = getById(reqId);
-        if (!request.getStatus().equals(RequestStatus.PENDING)) {
+        if (RequestStatus.PENDING != request.getStatus()) {
             throw new IncorrectStateException("You can confirm only pending requests");
         }
         Integer confirmedRequestsAmount = getAmountOfConfirmedRequestsByEvent(event);
@@ -119,7 +119,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
             throw new AccessDeniedException("Only initiator can reject the request");
         }
         ParticipationRequest request = getById(reqId);
-        if (!request.getStatus().equals(RequestStatus.PENDING)) {
+        if (RequestStatus.PENDING != request.getStatus()) {
             throw new IncorrectStateException("You can reject only pending requests");
         }
         request.setStatus(RequestStatus.REJECTED);
