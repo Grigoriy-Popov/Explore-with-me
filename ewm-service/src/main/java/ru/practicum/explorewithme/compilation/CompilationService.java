@@ -20,7 +20,7 @@ public interface CompilationService {
     void unpin(Long compId);
 
     //PUBLIC
-    List<Compilation> getAll(Boolean pinned, Integer from, Integer size);
+    List<Compilation> getAll(Boolean pinned, int from, int size);
 
     Compilation getById(Long compilationId);
 

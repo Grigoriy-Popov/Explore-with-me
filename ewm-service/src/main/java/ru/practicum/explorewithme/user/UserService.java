@@ -10,7 +10,7 @@ public interface UserService {
 
     void checkExistenceById(Long userId);
 
-    List<User> getAll(List<Long> usersIdList, Integer from, Integer size);
+    List<User> getAll(List<Long> usersId, int from, int size);
 
     User edit(User user, Long userId);
 

@@ -6,7 +6,7 @@ public interface CategoryService {
 
     Category create(Category category);
 
-    List<Category> getAll(Integer from, Integer size);
+    List<Category> getAll(int from, int size);
 
     Category getById(Long categoryId);
 

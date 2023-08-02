@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    List<User> findAllByIdIn(List<Long> usersIdList, Pageable page);
+    List<User> findAllByIdIn(List<Long> usersId, Pageable page);
 
 }

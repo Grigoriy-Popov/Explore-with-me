@@ -2,7 +2,6 @@ package ru.practicum.explorewithme.compilation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +13,8 @@ import ru.practicum.explorewithme.compilation.dto.CompilationDto;
 import ru.practicum.explorewithme.compilation.dto.CompilationMapper;
 import ru.practicum.explorewithme.compilation.dto.NewCompilationDto;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/admin/compilations")
 @RequiredArgsConstructor
@@ -22,7 +23,7 @@ public class AdminCompilationController {
     private final CompilationService compilationService;
 
     @PostMapping
-    public CompilationDto createCompilation(@RequestBody @Validated NewCompilationDto newCompilationDto) {
+    public CompilationDto createCompilation(@Valid @RequestBody NewCompilationDto newCompilationDto) {
         log.trace("hit endpoint - createCompilation");
         return CompilationMapper.toDto(compilationService.create(newCompilationDto));
     }

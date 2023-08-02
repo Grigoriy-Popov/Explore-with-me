@@ -101,7 +101,7 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
     }
 
     @Override
-    public List<Event> getAllInitiatorEvents(Long userId, Integer from, Integer size) {
+    public List<Event> getAllInitiatorEvents(Long userId, int from, int size) {
         User user = userService.getById(userId);
         Pageable page = PageRequest.of(from / size, size);
         List<Event> initiatorEvents = eventRepository.findAllByInitiator(user, page);

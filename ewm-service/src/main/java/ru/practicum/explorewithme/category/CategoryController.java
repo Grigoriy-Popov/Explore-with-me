@@ -30,8 +30,8 @@ public class CategoryController {
     // PUBLIC
     @GetMapping("categories")
     public List<CategoryDto> getAll(
-            @PositiveOrZero @RequestParam(name = "from", required = false, defaultValue = "0") Integer from,
-            @Positive @RequestParam(name = "size", required = false, defaultValue = "10") Integer size) {
+            @PositiveOrZero @RequestParam(required = false, defaultValue = "0") int from,
+            @Positive @RequestParam(required = false, defaultValue = "10") int size) {
         log.trace("hit endpoint - getAllCategoriesPublic");
 //        return CategoryMapper.toDto(categoryService.getAllCategories(from, size));
         return categoryMapper.toDto(categoryService.getAll(from, size));

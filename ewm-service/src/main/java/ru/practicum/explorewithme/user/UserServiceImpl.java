@@ -38,9 +38,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAll(List<Long> usersIdList, Integer from, Integer size) {
+    public List<User> getAll(List<Long> usersId, int from, int size) {
         Pageable page = PageRequest.of(from / size, size);
-        return userRepository.findAllByIdIn(usersIdList, page);
+        return userRepository.findAllByIdIn(usersId, page);
     }
 
     @Override

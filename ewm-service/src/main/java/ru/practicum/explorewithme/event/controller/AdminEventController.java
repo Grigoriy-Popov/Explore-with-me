@@ -50,7 +50,7 @@ public class AdminEventController {
 
     @PutMapping("/{eventId}")
     public FullEventDto edit(@PathVariable Long eventId,
-                                         @RequestBody AdminUpdateEventRequest adminUpdateEventRequest) {
+                             @RequestBody AdminUpdateEventRequest adminUpdateEventRequest) {
         log.trace("hit endpoint - editEventByAdmin");
 //        return EventMapper.toFullDto(eventService.editEventByAdmin(eventId, adminUpdateEventRequest));
         return eventMapper.toFullDto(adminEventService.editByAdmin(eventId, adminUpdateEventRequest));

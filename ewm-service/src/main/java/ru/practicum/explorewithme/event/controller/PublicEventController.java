@@ -3,6 +3,7 @@ package ru.practicum.explorewithme.event.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ import static ru.practicum.explorewithme.Constants.DATE_TIME_PATTERN;
 @RestController
 @RequestMapping("/events")
 @RequiredArgsConstructor
+@Validated
 @Slf4j
 public class PublicEventController {
     private final PublicEventService eventService;

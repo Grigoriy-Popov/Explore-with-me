@@ -6,7 +6,7 @@ import ru.practicum.explorewithme.event.dto.UpdateEventRequest;
 import java.util.List;
 
 public interface PrivateEventService {
-    List<Event> getAllInitiatorEvents(Long userId, Integer from, Integer size);
+    List<Event> getAllInitiatorEvents(Long userId, int from, int size);
 
     Event editByUser(Long userId, UpdateEventRequest updateEventRequest);
 
