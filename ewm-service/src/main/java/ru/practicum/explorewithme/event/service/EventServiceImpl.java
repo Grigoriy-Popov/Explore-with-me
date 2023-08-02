@@ -9,6 +9,7 @@ import ru.practicum.explorewithme.category.Category;
 import ru.practicum.explorewithme.category.CategoryService;
 import ru.practicum.explorewithme.client.EndpointHit;
 import ru.practicum.explorewithme.client.StatClient;
+import ru.practicum.explorewithme.common_dto.PageInfo;
 import ru.practicum.explorewithme.event.Event;
 import ru.practicum.explorewithme.event.EventRepository;
 import ru.practicum.explorewithme.event.State;
@@ -54,9 +55,9 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
     @Override
     public List<Event> getAllByPublicUser(String text, List<Long> categories, Boolean paid,
                                           LocalDateTime rangeStart, LocalDateTime rangeEnd, Boolean onlyAvailable,
-                                          String sort, int from, int size, String ip, String uri) {
+                                          PageInfo pageInfo, String ip, String uri) {
         postEndpointHit(uri, ip);
-        PageRequest pageRequest = PageRequest.of(from / size, size);
+        PageRequest pageRequest = PageRequest.of(pageInfo.getFrom() / pageInfo.getSize(), pageInfo.getSize());
         LocalDateTime start = rangeStart == null ? LocalDateTime.now() : rangeStart;
         LocalDateTime end = rangeEnd == null ? LocalDateTime.MAX : rangeEnd;
         // Список приходит отсортированным по дате, если нужна сортировка по просмотрам, она происходит дальше
@@ -66,7 +67,7 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
                     .filter(event -> event.getParticipantLimit() >= event.getConfirmedRequests())
                     .collect(Collectors.toList());
         }
-        if (sort.equals("VIEWS")) {
+        if (pageInfo.getSort().equals("VIEWS")) {
             events.sort(Comparator.comparing(Event::getViews));
         }
         events.forEach(this::setConfirmedRequestsAndViews);
@@ -101,9 +102,9 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
     }
 
     @Override
-    public List<Event> getAllInitiatorEvents(Long userId, int from, int size) {
+    public List<Event> getAllInitiatorEvents(Long userId, PageInfo pageInfo) {
         User user = userService.getById(userId);
-        Pageable page = PageRequest.of(from / size, size);
+        Pageable page = PageRequest.of(pageInfo.getFrom() / pageInfo.getSize(), pageInfo.getSize());
         List<Event> initiatorEvents = eventRepository.findAllByInitiator(user, page);
         initiatorEvents.forEach(this::setConfirmedRequestsAndViews);
         return initiatorEvents;
@@ -173,7 +174,7 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
     //ADMIN
     @Override
     public List<Event> getEventsByAdmin(List<Long> users, List<String> states, List<Long> categories,
-                                        LocalDateTime rangeStart, LocalDateTime rangeEnd, int from, int size) {
+                                        LocalDateTime rangeStart, LocalDateTime rangeEnd, PageInfo pageInfo) {
         List<State> stateList;
         if (states != null) {
             stateList = new ArrayList<>(states.size());
@@ -189,7 +190,7 @@ public class EventServiceImpl implements PrivateEventService, PublicEventService
         }
         LocalDateTime start = rangeStart == null ? LocalDateTime.now() : rangeStart;
         LocalDateTime end = rangeEnd == null ? LocalDateTime.MAX : rangeEnd;
-        Pageable page = PageRequest.of(from / size, size);
+        Pageable page = PageRequest.of(pageInfo.getFrom() / pageInfo.getSize(), pageInfo.getSize());
         List<Event> events = eventRepository.findByAdmin(users, stateList, categories, start, end, page);
         events.forEach(this::setConfirmedRequestsAndViews);
         return events;

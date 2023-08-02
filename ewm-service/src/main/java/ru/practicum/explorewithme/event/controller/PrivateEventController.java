@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.practicum.explorewithme.common_dto.PageInfo;
 import ru.practicum.explorewithme.event.Event;
 import ru.practicum.explorewithme.event.dto.EventMapper;
 import ru.practicum.explorewithme.event.dto.EventMapperMapStruct;
@@ -44,8 +45,9 @@ public class PrivateEventController {
             @PositiveOrZero @RequestParam(required = false, defaultValue = "0") int from,
             @Positive @RequestParam(required = false, defaultValue = "10") int size) {
         log.trace("hit endpoint - getAllInitiatorEvents by user with id - {}", userId);
+        PageInfo pageInfo = PageInfo.builder().from(from).size(size).build();
 //        return EventMapper.toShortDto(eventService.getAllInitiatorEvents(userId, from, size));
-        return eventMapper.toShortDto(privateEventService.getAllInitiatorEvents(userId, from, size));
+        return eventMapper.toShortDto(privateEventService.getAllInitiatorEvents(userId, pageInfo));
     }
 
     @PatchMapping

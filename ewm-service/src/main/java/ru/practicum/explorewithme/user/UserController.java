@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.practicum.explorewithme.common_dto.PageInfo;
 import ru.practicum.explorewithme.user.dto.UserDto;
 import ru.practicum.explorewithme.user.dto.UserMapper;
 import ru.practicum.explorewithme.user.dto.UserMapperMapStruct;
@@ -51,7 +52,8 @@ public class UserController {
             @Positive @RequestParam(required = false, defaultValue = "10") int size) {
         log.trace("hit endpoint - getAllUsers");
 //        return UserMapper.toDto(userService.getAllUsers(ids, from, size));
-        return mapper.toDto(userService.getAll(usersId, from, size));
+        PageInfo pageInfo = PageInfo.builder().from(from).size(size).build();
+        return mapper.toDto(userService.getAll(usersId, pageInfo));
     }
 
     @PatchMapping("/{userId}")

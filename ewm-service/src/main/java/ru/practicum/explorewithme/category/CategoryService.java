@@ -1,12 +1,14 @@
 package ru.practicum.explorewithme.category;
 
+import ru.practicum.explorewithme.common_dto.PageInfo;
+
 import java.util.List;
 
 public interface CategoryService {
 
     Category create(Category category);
 
-    List<Category> getAll(int from, int size);
+    List<Category> getAll(PageInfo pageInfo);
 
     Category getById(Long categoryId);
 

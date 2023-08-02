@@ -1,5 +1,6 @@
 package ru.practicum.explorewithme.compilation;
 
+import ru.practicum.explorewithme.common_dto.PageInfo;
 import ru.practicum.explorewithme.compilation.dto.NewCompilationDto;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface CompilationService {
     void unpin(Long compId);
 
     //PUBLIC
-    List<Compilation> getAll(Boolean pinned, int from, int size);
+    List<Compilation> getAll(Boolean pinned, PageInfo pageInfo);
 
     Compilation getById(Long compilationId);
 

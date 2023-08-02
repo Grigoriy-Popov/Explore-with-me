@@ -5,6 +5,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.practicum.explorewithme.common_dto.PageInfo;
 import ru.practicum.explorewithme.event.EventRepository;
 import ru.practicum.explorewithme.exceptions.AccessDeniedException;
 import ru.practicum.explorewithme.exceptions.ConflictException;
@@ -28,8 +29,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> getAll(int from, int size) {
-        Pageable page = PageRequest.of(from / size, size);
+    public List<Category> getAll(PageInfo pageInfo) {
+        Pageable page = PageRequest.of(pageInfo.getFrom() / pageInfo.getSize(), pageInfo.getSize());
         return categoryRepository.findAll(page).getContent();
     }
 

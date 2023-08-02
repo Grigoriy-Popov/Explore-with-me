@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.practicum.explorewithme.common_dto.PageInfo;
 import ru.practicum.explorewithme.event.dto.AdminUpdateEventRequest;
 import ru.practicum.explorewithme.event.dto.EventMapperMapStruct;
 import ru.practicum.explorewithme.event.dto.FullEventDto;
@@ -44,8 +45,9 @@ public class AdminEventController {
         log.trace("hit endpoint - getEventsByAdmin, states - {}", states);
 //        return EventMapper.toFullDto(eventService
 //                .getEventsByAdmin(users, states, categories, rangeStart, rangeEnd, from, size));
+        PageInfo pageInfo = PageInfo.builder().from(from).size(size).build();
         return eventMapper.toFullDto(adminEventService
-                .getEventsByAdmin(users, states, categories, rangeStart, rangeEnd, from, size));
+                .getEventsByAdmin(users, states, categories, rangeStart, rangeEnd, pageInfo));
     }
 
     @PutMapping("/{eventId}")
