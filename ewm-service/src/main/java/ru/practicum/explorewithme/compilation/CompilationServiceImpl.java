@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.practicum.explorewithme.common_dto.PageInfo;
 import ru.practicum.explorewithme.compilation.dto.NewCompilationDto;
 import ru.practicum.explorewithme.event.Event;
 import ru.practicum.explorewithme.event.service.PublicEventService;
@@ -77,8 +78,8 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
-    public List<Compilation> getAll(Boolean pinned, Integer from, Integer size) {
-        Pageable page = PageRequest.of(from / size, size);
+    public List<Compilation> getAll(Boolean pinned, PageInfo pageInfo) {
+        Pageable page = PageRequest.of(pageInfo.getFrom() / pageInfo.getSize(), pageInfo.getSize());
         return compilationRepository.findAllByPinned(pinned, page);
     }
 }

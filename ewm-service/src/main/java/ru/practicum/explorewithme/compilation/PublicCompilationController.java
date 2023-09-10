@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.practicum.explorewithme.common_dto.PageInfo;
 import ru.practicum.explorewithme.compilation.dto.CompilationDto;
 import ru.practicum.explorewithme.compilation.dto.CompilationMapper;
 
@@ -24,12 +25,12 @@ public class PublicCompilationController {
     private final CompilationService compilationService;
 
     @GetMapping
-    public List<CompilationDto> getAll(@RequestParam(value = "pinned", required = false,
-            defaultValue = "true") Boolean pinned,
-            @PositiveOrZero @RequestParam(name = "from", required = false, defaultValue = "0") Integer from,
-            @Positive @RequestParam(name = "size", required = false, defaultValue = "10") Integer size) {
+    public List<CompilationDto> getAll(@RequestParam(required = false, defaultValue = "true") Boolean pinned,
+            @PositiveOrZero @RequestParam(required = false, defaultValue = "0") int from,
+            @Positive @RequestParam(required = false, defaultValue = "10") int size) {
         log.trace("hit endpoint - getAllCompilations: pinned - {}", pinned);
-        return CompilationMapper.toDto(compilationService.getAll(pinned, from, size));
+        PageInfo pageInfo = PageInfo.builder().from(from).size(size).build();
+        return CompilationMapper.toDto(compilationService.getAll(pinned, pageInfo));
     }
 
     @GetMapping("/{compId}")

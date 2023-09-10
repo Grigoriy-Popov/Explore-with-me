@@ -92,7 +92,7 @@ public class ErrorHandler {
         return ApiError.builder()
                 .status(HttpStatus.BAD_REQUEST)
                 .reason("Bad validation")
-                .message("Field '" + error.getField() + "'. Error - "  + error.getDefaultMessage())
+                .message("Field '" + error.getField() + "'. Error - " + error.getDefaultMessage())
                 .timestamp(LocalDateTime.now())
                 .build();
     }
@@ -102,7 +102,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ValidationErrorResponse onConstraintValidationException(ConstraintViolationException e) {
         final List<Violation> violations = e.getConstraintViolations().stream()
-                .map(violation -> new Violation(violation.getPropertyPath().toString(), violation.getMessage())                )
+                .map(violation -> new Violation(violation.getPropertyPath().toString(), violation.getMessage()))
                 .collect(Collectors.toList());
         return new ValidationErrorResponse(violations);
     }
@@ -128,4 +128,5 @@ public class ErrorHandler {
                 .timestamp(LocalDateTime.now())
                 .build();
     }
+
 }

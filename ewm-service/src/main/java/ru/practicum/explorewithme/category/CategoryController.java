@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.explorewithme.category.dto.CategoryDto;
 import ru.practicum.explorewithme.category.dto.CategoryMapperMapStruct;
+import ru.practicum.explorewithme.common_dto.PageInfo;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -30,11 +31,12 @@ public class CategoryController {
     // PUBLIC
     @GetMapping("categories")
     public List<CategoryDto> getAll(
-            @PositiveOrZero @RequestParam(name = "from", required = false, defaultValue = "0") Integer from,
-            @Positive @RequestParam(name = "size", required = false, defaultValue = "10") Integer size) {
+            @PositiveOrZero @RequestParam(required = false, defaultValue = "0") int from,
+            @Positive @RequestParam(required = false, defaultValue = "10") int size) {
         log.trace("hit endpoint - getAllCategoriesPublic");
 //        return CategoryMapper.toDto(categoryService.getAllCategories(from, size));
-        return categoryMapper.toDto(categoryService.getAll(from, size));
+        PageInfo pageInfo = PageInfo.builder().from(from).size(size).build();
+        return categoryMapper.toDto(categoryService.getAll(pageInfo));
     }
 
     @GetMapping(path = "categories/{categoryId}")

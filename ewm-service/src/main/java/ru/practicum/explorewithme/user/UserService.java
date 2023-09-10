@@ -1,5 +1,7 @@
 package ru.practicum.explorewithme.user;
 
+import ru.practicum.explorewithme.common_dto.PageInfo;
+
 import java.util.List;
 
 public interface UserService {
@@ -10,7 +12,7 @@ public interface UserService {
 
     void checkExistenceById(Long userId);
 
-    List<User> getAll(List<Long> usersIdList, Integer from, Integer size);
+    List<User> getAll(List<Long> usersId, PageInfo pageInfo);
 
     User edit(User user, Long userId);
 

@@ -3,11 +3,13 @@ package ru.practicum.explorewithme.event.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.practicum.explorewithme.common_dto.PageInfo;
 import ru.practicum.explorewithme.event.dto.EventMapperMapStruct;
 import ru.practicum.explorewithme.event.dto.FullEventDto;
 import ru.practicum.explorewithme.event.dto.ShortEventDto;
@@ -24,6 +26,7 @@ import static ru.practicum.explorewithme.Constants.DATE_TIME_PATTERN;
 @RestController
 @RequestMapping("/events")
 @RequiredArgsConstructor
+@Validated
 @Slf4j
 public class PublicEventController {
     private final PublicEventService eventService;
@@ -42,8 +45,9 @@ public class PublicEventController {
         log.trace("hit endpoint - getAllEventsByPublicUser");
 //        return EventMapper.toShortDto(eventService.getAllEventsByPublicUser(text, categories, paid, rangeStart,
 //                rangeEnd, onlyAvailable, sort, from, size, request.getRemoteAddr(), request.getRequestURI()));
+        PageInfo pageInfo = PageInfo.builder().from(from).size(size).sort(sort).build();
         return eventMapper.toShortDto(eventService.getAllByPublicUser(text, categories, paid, rangeStart,
-                rangeEnd, onlyAvailable, sort, from, size, request.getRemoteAddr(), request.getRequestURI()));
+                rangeEnd, onlyAvailable, pageInfo, request.getRemoteAddr(), request.getRequestURI()));
     }
 
     @GetMapping(path = "/{eventId}")
