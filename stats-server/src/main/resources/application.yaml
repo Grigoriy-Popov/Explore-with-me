@@ -5,6 +5,8 @@ spring:
   profiles:
     active: local
 #    active: docker
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
   jpa:
     hibernate:
       ddl-auto: none
@@ -13,9 +15,9 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 #        show_sql: true
 #        format_sql: true
-  sql:
-    init:
-      mode: always
+#  sql:
+#    init:
+#      mode: always
 logging:
   level:
     ru.practicum.explorewithme: trace
