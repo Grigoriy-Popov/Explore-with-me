@@ -1,0 +1,33 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="create-table-endpoint_hits" author="gr.popov">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="endpoint_hits"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="endpoint_hits" remarks="Обращения к эндпоинтам">
+            <column name="id" type="bigint" autoIncrement="true">
+<!--                <constraints nullable="false" primaryKey="true"/>-->
+            </column>
+            <column name="app" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="uri" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ip" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="timestamp" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="endpoint_hits" columnNames="id" constraintName="endpoint_hits_pk"/>
+    </changeSet>
+
+</databaseChangeLog>

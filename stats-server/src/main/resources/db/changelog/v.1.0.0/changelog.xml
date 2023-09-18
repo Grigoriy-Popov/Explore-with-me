@@ -1,0 +1,12 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="add-tag-1.0.0" author="gr.popov">
+        <tagDatabase tag="v.1.0.0"/>
+    </changeSet>
+
+    <include file="create-table-endpoint_hits.xml" relativeToChangelogFile="true"/>
+
+</databaseChangeLog>

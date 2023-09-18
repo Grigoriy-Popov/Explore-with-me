@@ -1,0 +1,39 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="create-table-participation_requests" author="gr.popov">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="participation_requests"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="participation_requests" remarks="Заявки на участие в событии">
+            <column name="id" type="bigint" autoIncrement="true">
+<!--                <constraints nullable="false" primaryKey="true"/>-->
+            </column>
+            <column name="created" type="timestamp WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="requester_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="participation_requests" columnNames="id" constraintName="participation_requests_pk"/>
+        <addForeignKeyConstraint baseTableName="participation_requests" baseColumnNames="event_id"
+                                 constraintName="fk_part_event_id-events_id"
+                                 referencedTableName="events" referencedColumnNames="id" deleteCascade="true"/>
+        <addForeignKeyConstraint baseTableName="participation_requests" baseColumnNames="requester_id"
+                                 constraintName="fk_part_requester_id-users_id"
+                                 referencedTableName="users" referencedColumnNames="id" deleteCascade="true"/>
+    </changeSet>
+
+</databaseChangeLog>

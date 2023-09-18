@@ -1,0 +1,27 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="create-table-locations" author="gr.popov">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="locations"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="locations" remarks="Локация события">
+            <column name="id" type="bigint" autoIncrement="true">
+<!--                <constraints nullable="false" primaryKey="true"/>-->
+            </column>
+            <column name="lat" type="float">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lon" type="float">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="locations" columnNames="id" constraintName="locations_pk"/>
+    </changeSet>
+
+</databaseChangeLog>

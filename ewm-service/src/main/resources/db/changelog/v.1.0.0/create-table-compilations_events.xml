@@ -1,0 +1,31 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="create-table-compilations_events" author="gr.popov">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="compilations_events"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="compilations_events" remarks="События в подборке">
+            <column name="compilation_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="compilations_events" columnNames="compilation_id, event_id"
+                       constraintName="compilations_events_pk"/>
+        <addForeignKeyConstraint baseTableName="compilations_events" baseColumnNames="compilation_id"
+                                 constraintName="fk_compilations_events_compilation_id-compilations_id"
+                                 referencedTableName="compilations" referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="compilations_events" baseColumnNames="event_id"
+                                 constraintName="fk_compilations_events_event_id-events_id"
+                                 referencedTableName="events" referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>

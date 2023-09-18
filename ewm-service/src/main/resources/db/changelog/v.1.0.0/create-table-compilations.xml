@@ -1,0 +1,27 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="create-table-compilations" author="gr.popov">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="compilations"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="compilations" remarks="Подборки событий">
+            <column name="id" type="bigint" autoIncrement="true">
+<!--                <constraints nullable="false" primaryKey="true"/>-->
+            </column>
+            <column name="title" type="varchar(512)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pinned" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="compilations" columnNames="id" constraintName="compilations_pk"/>
+    </changeSet>
+
+</databaseChangeLog>
